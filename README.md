@@ -1,5 +1,5 @@
 # REACTOR #
 ---
 ## Team Anchovy ##
-# Team Lamprey #
+### Team Lamprey ###
 
