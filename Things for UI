@@ -1,0 +1,26 @@
+GUI needs button / some way for the user to:
+	- Game Play
+		- Step / Pause (depending on what we decide)
+		- Controlling components
+			- Set valve (on/off)
+			- Set Pump RPM (or pump on off (probably not both))
+			- Set controll rod level
+		- Repairing components
+			- Pumps
+			- Reactor
+			- Condenser
+			- Turbine
+	- Things to display
+		- Reactor: stats ( Health, water level, temp, pressure, mins an maxes of these possibly)
+		- Condenser: (same as above)
+		- Pumps: RPM and whether functional
+		- Valves: Position
+		- Turbine: RPM and functionality
+		- Control Rod Level
+	- Other things for user to be able to do
+		- New Game
+		- Save Game
+		- Load Game
+		- High Scores
+		- Close
+			
