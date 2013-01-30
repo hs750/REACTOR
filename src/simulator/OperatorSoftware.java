@@ -31,7 +31,7 @@ public class OperatorSoftware {
 	 * If the random number generator is less that the failure chance constant, set the OS to failed.
 	 */
 	public void calculateOSFailed(){
-		Double randomNumber = randBetween0and100();
+		Double randomNumber = randDoubleBetween0and100();
 		if(randomNumber < RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE)
 			OSFailed = true;
 	}
@@ -172,49 +172,77 @@ public class OperatorSoftware {
 	 */
 	
 	public int getReactorHealth() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorHealth(); //TODO Implement failed behavior
 	}
 	public int getReactorTemperature() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorTemperature(); //TODO Implement failed behavior
 	}
 	public int getReactorMaxTemperature() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorMaxTemperature();//TODO Implement failed behavior
 	}
 	public int getReactorPressure() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorPressure();//TODO Implement failed behavior
 	}
 	public int getReactorMaxPressure() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorMaxPressure();//TODO Implement failed behavior
 	}
 	public int getReactorWaterVolume() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorWaterVolume();//TODO Implement failed behavior
 	}
 	public int getReactorMinSafeWaterVolume() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getReactorMinSafeWaterVolume();//TODO Implement failed behavior
 	}
 	public int getCondenserHealth() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserHealth();//TODO Implement failed behavior
 	}
 	public int getCondenserTemperature() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserTemperature();//TODO Implement failed behavior
 	}
 	public int getCondenserMaxTemperature() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserMaxTemperature();//TODO Implement failed behavior
 	}
 	public int getCondenserPressure() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserPressure();//TODO Implement failed behavior
 	}
 	public int getCondenserMaxPressure() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserMaxPressure();//TODO Implement failed behavior
 	}
 	public int getCondenserWaterVolume() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getCondenserWaterVolume();//TODO Implement failed behavior
 	}
 	public int getControlRodsPercentage() {
+		if(OSFailed)
+			return randIntBetween0and100();
 		return uidata.getControlRodsPercentage();//TODO Implement failed behavior
 	}
 	//Get Pumps and getValves is not very MVC compliant, (view has to know how to interact with the component, making layout changes harder) //TODO Is there a better way to do this. {@see TextUI.updateSystemText}
-	public List<Valve> getValves() {
+	public List<Valve> getValve() {
 		return uidata.getValves();//TODO Implement failed behavior
 	}
 	public List<Pump> getPumps() {
@@ -227,7 +255,7 @@ public class OperatorSoftware {
 		return uidata.getPowerOutput();//TODO Implement failed behavior
 	}
 	public boolean isTurbineFunctional() {
-		return uidata.isTurbineFunctional();//TODO Implement failed behavior
+		return uidata.isTurbineFunctional();
 	}
 
 	/*
@@ -260,7 +288,12 @@ public class OperatorSoftware {
 	 * Generates a random number between 0 and 100
 	 * @return Random Number
 	 */
-	private double randBetween0and100(){
+	private double randDoubleBetween0and100(){
+		Date time = new Date();
+		Random rand = new Random(time.getTime());
+		return rand.nextDouble() * 100; 
+	}
+	private int randIntBetween0and100(){
 		Date time = new Date();
 		Random rand = new Random(time.getTime());
 		return rand.nextDouble() * 100; 
