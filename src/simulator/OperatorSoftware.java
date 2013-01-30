@@ -174,87 +174,125 @@ public class OperatorSoftware {
 	public int getReactorHealth() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorHealth(); //TODO Implement failed behavior
+		return uidata.getReactorHealth();
 	}
 	public int getReactorTemperature() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorTemperature(); //TODO Implement failed behavior
+		return uidata.getReactorTemperature(); 
 	}
 	public int getReactorMaxTemperature() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorMaxTemperature();//TODO Implement failed behavior
+		return uidata.getReactorMaxTemperature();
 	}
 	public int getReactorPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorPressure();//TODO Implement failed behavior
+		return uidata.getReactorPressure();
 	}
 	public int getReactorMaxPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorMaxPressure();//TODO Implement failed behavior
+		return uidata.getReactorMaxPressure();
 	}
 	public int getReactorWaterVolume() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorWaterVolume();//TODO Implement failed behavior
+		return uidata.getReactorWaterVolume();
 	}
 	public int getReactorMinSafeWaterVolume() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getReactorMinSafeWaterVolume();//TODO Implement failed behavior
+		return uidata.getReactorMinSafeWaterVolume();
 	}
 	public int getCondenserHealth() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserHealth();//TODO Implement failed behavior
+		return uidata.getCondenserHealth();
 	}
 	public int getCondenserTemperature() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserTemperature();//TODO Implement failed behavior
+		return uidata.getCondenserTemperature();
 	}
 	public int getCondenserMaxTemperature() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserMaxTemperature();//TODO Implement failed behavior
+		return uidata.getCondenserMaxTemperature();
 	}
 	public int getCondenserPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserPressure();//TODO Implement failed behavior
+		return uidata.getCondenserPressure();
 	}
 	public int getCondenserMaxPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserMaxPressure();//TODO Implement failed behavior
+		return uidata.getCondenserMaxPressure();
 	}
 	public int getCondenserWaterVolume() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getCondenserWaterVolume();//TODO Implement failed behavior
+		return uidata.getCondenserWaterVolume();
 	}
 	public int getControlRodsPercentage() {
 		if(OSFailed)
 			return randIntBetween0and100();
-		return uidata.getControlRodsPercentage();//TODO Implement failed behavior
+		return uidata.getControlRodsPercentage();
 	}
 	//Get Pumps and getValves is not very MVC compliant, (view has to know how to interact with the component, making layout changes harder) //TODO Is there a better way to do this. {@see TextUI.updateSystemText}
-	public List<Valve> getValve() {
-		return uidata.getValves();//TODO Implement failed behavior
+	//TODO make a note of how this had to be changed to make it so that UI, doesnt have to deal with components.
+	public boolean[] getValvePositions() {
+		List<Valve> valves = uidata.getValves();
+		boolean[] positions = new boolean[valves.size()];
+		int i = 0;
+		for(Valve valve : valves){
+			if(OSFailed)
+				positions[i] = randBoolean();
+			positions[i] = valve.isOpen();
+			i++;
+		}
+		return positions;
 	}
-	public List<Pump> getPumps() {
-		return uidata.getPumps();//TODO Implement failed behavior
+	
+	public int[] getPumpRpms() {
+		List<Pump> pumps = uidata.getPumps();
+		int[] Rpms = new int[pumps.size()];
+		int i = 0;
+		for(Pump pump : pumps){
+			if(OSFailed)
+				Rpms[i] = randIntBetween0and100() * 10; // RPM is between 0 and 1000
+			Rpms[i] = pump.getRpm();
+			i++;
+		}
+		return Rpms;
+	}
+	public boolean[] arePumpsFunctional(){
+		List<Pump> pumps = uidata.getPumps();
+		boolean[] functional = new boolean[pumps.size()];
+		int i = 0;
+		for(Pump pump : pumps){
+			if(OSFailed)
+				functional[i] = randBoolean();
+			functional[i] = pump.isOperational();
+			i++;
+		}
+		return functional;
 	}
 	public int getTurbineRpm() {
-		return uidata.getTurbineRpm();//TODO Implement failed behavior
+		if(OSFailed)
+			return randIntBetween0and100();
+		return uidata.getTurbineRpm();
 	}
 	public int getPowerOutput() {
-		return uidata.getPowerOutput();//TODO Implement failed behavior
+		if(OSFailed)
+			return randIntBetween0and100();
+		return uidata.getPowerOutput();
 	}
 	public boolean isTurbineFunctional() {
+		if(OSFailed)
+			return randBoolean();
 		return uidata.isTurbineFunctional();
 	}
 
@@ -296,8 +334,12 @@ public class OperatorSoftware {
 	private int randIntBetween0and100(){
 		Date time = new Date();
 		Random rand = new Random(time.getTime());
-		return rand.nextDouble() * 100; 
+		return rand.nextInt() * 100; 
 	}
-	
+	private boolean randBoolean(){
+		Date time = new Date();
+		Random rand = new Random(time.getTime());
+		return rand.nextBoolean();
+	}
 	
 }
