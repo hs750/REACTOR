@@ -168,10 +168,5 @@ public class OperatorSoftware {
 		calculateOSFailed();
 		controller.step(numSteps);
 	}
-	
-	
-	
-	
-	
 	 
 }

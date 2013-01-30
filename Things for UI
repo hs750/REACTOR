@@ -8,8 +8,6 @@ GUI needs button / some way for the user to:
 			- Set controll rod level
 		- Repairing components
 			- Pumps
-			- Reactor
-			- Condenser
 			- Turbine
 	- Things to display
 		- Reactor: stats ( Health, water level, temp, pressure, mins an maxes of these possibly)
