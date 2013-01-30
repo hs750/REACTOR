@@ -1,4 +1,9 @@
 package simulator;
+
+import java.util.List;
+
+import model.HighScore;
+
 public class OperatorSoftware {
 
 	private PlantController controller;
@@ -8,6 +13,8 @@ public class OperatorSoftware {
 		this.controller = controller;
 		this.uidata = controller.getUIData();
 	}
+	
+	
 	
 	/* ------------------- Control Software Pass-though Methods ------------------------
 	 * These methods are intended to be called by the GUI.
@@ -20,7 +27,7 @@ public class OperatorSoftware {
 	 * @param operatorName the name of the player
 	 */
 	public void newGame(String operatorName) {
-		// TODO passthrough command to controller
+		controller.newGame(operatorName);
 	}
 	
 	/**
@@ -28,7 +35,7 @@ public class OperatorSoftware {
 	 * @return true if saving a game was successful, false otherwise.
 	 */
 	public boolean saveGame(){
-		// TODO passthrough command to controller
+		return controller.saveGame();
 	}
 	
 	/**
@@ -37,8 +44,7 @@ public class OperatorSoftware {
 	 * @return true if loading a game was successful, false otherwise.
 	 */
 	public boolean loadGame() {
-		// TODO passthrough command to controller
-		
+		return controller.loadGame();
 	}
 	
 	/**
@@ -55,7 +61,7 @@ public class OperatorSoftware {
 	 * @return list of highscores.
 	 */
 	public List<HighScore> getHighScores() {
-		// TODO passthrough command to controller
+		return controller.getHighScores();
 	}
 	
 	/**
@@ -63,7 +69,7 @@ public class OperatorSoftware {
 	 * @return true if adding was successful and the new score is in top 10, false otherwise.
 	 */
 	public boolean addHighScore(HighScore newHighScore) {
-		// TODO passthrough command to controller
+		return controller.addHighScore(newHighScore);
 	}
 	
 	/**
@@ -71,7 +77,8 @@ public class OperatorSoftware {
 	 * @return true if command was successful, false if a valve with that ID was not found
 	 */
 	public boolean setValve(int valveID, boolean open) {
-		// TODO passthrough command to controller
+		// TODO Implement failure
+		return controller.setValve(valveID, open);
 	}
 	
 	/**
@@ -79,7 +86,8 @@ public class OperatorSoftware {
 	 * @return true if command was successful, false if a pump with that ID was not found
 	 */
 	public boolean setPumpOnOff(int pumpID, boolean on) {
-		// TODO passthrough command to controller
+		// TODO Implement failure
+		return controller.setPumpOnOff(pumpID, on);
 	}
 	
 	/**
@@ -90,7 +98,8 @@ public class OperatorSoftware {
 	 * @throws IllegalArgumentException if RPM is out of the allowed range (rpm < 0 || rpm > MAX_RPM).
 	 */
 	public boolean setPumpRpm(int pumpID, int rpm) throws IllegalArgumentException {
-		// TODO passthrough command to controller
+		// TODO Implement failure
+		return controller.setPumpRpm(pumpID, rpm);
 	}
 	
 	/**
@@ -101,7 +110,8 @@ public class OperatorSoftware {
 	 * @param percentageLowered the new value of percentageLowered
 	 */
 	public void setControlRods(int percentageLowered) {
-		// TODO passthrough command to controller
+		// TODO Implement failure
+		controller.setControlRods(percentageLowered);
 	}
 	
 	/**
@@ -109,7 +119,8 @@ public class OperatorSoftware {
 	 * @return true only if the turbine has failed and is not already being repaired.
 	 */
 	public boolean repairTurbine() {
-		// TODO passthrough command to controller
+		// TODO Implement some sort of check perhaps
+		return controller.repairTurbine();
 	}
 	
 	/**
@@ -118,7 +129,8 @@ public class OperatorSoftware {
 	 * @return true only if the pump is found, has failed and is not already being repaired.
 	 */
 	public boolean repairPump(int pumpID) {
-		// TODO passthrough command to controller
+		// TODO Implement some sort of check
+		return controller.repairPump(pumpID);
 	}
 	
 	/**
@@ -128,7 +140,8 @@ public class OperatorSoftware {
 	 * @param numSteps number of timesteps to advance the game by.
 	 */
 	public void step(int numSteps) {
-		// TODO passthrough command to controller
+		// TODO may want to do something other than just pass through
+		controller.step(numSteps);
 	}
 	
 	
