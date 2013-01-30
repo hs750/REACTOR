@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import pcomponents.Pump;
+import pcomponents.Valve;
+
 import model.HighScore;
 
 public class OperatorSoftware {
 
 	private PlantController controller;
-	protected UIData uidata;
+	private UIData uidata;
 	private boolean OSFailed;
 	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
 	
@@ -28,9 +31,7 @@ public class OperatorSoftware {
 	 * If the random number generator is less that the failure chance constant, set the OS to failed.
 	 */
 	public void calculateOSFailed(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
-		Double randomNumber = rand.nextDouble() * 100; //Make it a percentage
+		Double randomNumber = randBetween0and100();
 		if(randomNumber < RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE)
 			OSFailed = true;
 	}
@@ -42,7 +43,7 @@ public class OperatorSoftware {
 	}
 	
 	
-	/* ------------------- Control Software Pass-though Methods ------------------------
+	/* ------------------- Control Software Pass-though Methods  ------------------------
 	 * These methods are intended to be called by the GUI.
 	 * If the Operator Software is functioning they will pass though the given argument(s) normally
 	 * If however the operator software has 'Failed' then the argument that is passed though will be 'Random'
@@ -55,7 +56,6 @@ public class OperatorSoftware {
 	 * @param numSteps number of timesteps to advance the game by.
 	 */
 	public void step(int numSteps) {
-		// TODO may want to do something other than just pass through
 		calculateOSFailed();
 		controller.step(numSteps);
 	}
@@ -91,7 +91,7 @@ public class OperatorSoftware {
 	 * to easily create a real-time game.
 	 */
 	public void togglePaused() {
-		// TODO passthrough command to controller
+		//TODO Implement if you want to pause (only applicable if using a continuous game loop)
 	}
 	
 	/**
@@ -110,15 +110,26 @@ public class OperatorSoftware {
 		return controller.addHighScore(newHighScore);
 	}
 	
-	/*
-	 * -------------___ Methods affected by the Operator Software Failing ____________________
-	 */
+	public String getOperatorName() {
+		return uidata.getOperatorName();
+	}
+	public int getScore() {
+		return uidata.getScore();
+	}
 	
+	public boolean isGameOver() {
+		return uidata.isGameOver();
+	}
+	
+	/*
+	 * ----------------- Methods affected by the Operator Software Failing (Setters)-----------------
+	 */
 	/**
 	 * Returns true if command was successful, false if a valve with that ID was not found
 	 * @return true if command was successful, false if a valve with that ID was not found
 	 */
 	public boolean setValve(int valveID, boolean open) {
+		
 		// TODO Implement failure
 		return controller.setValve(valveID, open);
 	}
@@ -157,6 +168,69 @@ public class OperatorSoftware {
 	}
 	
 	/*
+	 * --------------- Methods affected by the Operator Software Failing (Getters)-----------------
+	 */
+	
+	public int getReactorHealth() {
+		return uidata.getReactorHealth(); //TODO Implement failed behavior
+	}
+	public int getReactorTemperature() {
+		return uidata.getReactorTemperature(); //TODO Implement failed behavior
+	}
+	public int getReactorMaxTemperature() {
+		return uidata.getReactorMaxTemperature();//TODO Implement failed behavior
+	}
+	public int getReactorPressure() {
+		return uidata.getReactorPressure();//TODO Implement failed behavior
+	}
+	public int getReactorMaxPressure() {
+		return uidata.getReactorMaxPressure();//TODO Implement failed behavior
+	}
+	public int getReactorWaterVolume() {
+		return uidata.getReactorWaterVolume();//TODO Implement failed behavior
+	}
+	public int getReactorMinSafeWaterVolume() {
+		return uidata.getReactorMinSafeWaterVolume();//TODO Implement failed behavior
+	}
+	public int getCondenserHealth() {
+		return uidata.getCondenserHealth();//TODO Implement failed behavior
+	}
+	public int getCondenserTemperature() {
+		return uidata.getCondenserTemperature();//TODO Implement failed behavior
+	}
+	public int getCondenserMaxTemperature() {
+		return uidata.getCondenserMaxTemperature();//TODO Implement failed behavior
+	}
+	public int getCondenserPressure() {
+		return uidata.getCondenserPressure();//TODO Implement failed behavior
+	}
+	public int getCondenserMaxPressure() {
+		return uidata.getCondenserMaxPressure();//TODO Implement failed behavior
+	}
+	public int getCondenserWaterVolume() {
+		return uidata.getCondenserWaterVolume();//TODO Implement failed behavior
+	}
+	public int getControlRodsPercentage() {
+		return uidata.getControlRodsPercentage();//TODO Implement failed behavior
+	}
+	//Get Pumps and getValves is not very MVC compliant, (view has to know how to interact with the component, making layout changes harder) //TODO Is there a better way to do this. {@see TextUI.updateSystemText}
+	public List<Valve> getValves() {
+		return uidata.getValves();//TODO Implement failed behavior
+	}
+	public List<Pump> getPumps() {
+		return uidata.getPumps();//TODO Implement failed behavior
+	}
+	public int getTurbineRpm() {
+		return uidata.getTurbineRpm();//TODO Implement failed behavior
+	}
+	public int getPowerOutput() {
+		return uidata.getPowerOutput();//TODO Implement failed behavior
+	}
+	public boolean isTurbineFunctional() {
+		return uidata.isTurbineFunctional();//TODO Implement failed behavior
+	}
+
+	/*
 	 * ----------------------------- Repair Components ----------------------
 	 * Excludes Operator software. See above section for methods about OS.
 	 */
@@ -178,5 +252,19 @@ public class OperatorSoftware {
 		// TODO Implement some sort of check
 		return controller.repairPump(pumpID);
 	}
-	 
+	
+	/*
+	 * ----------------- Utility Functions -----------------------------------
+	 */
+	/**
+	 * Generates a random number between 0 and 100
+	 * @return Random Number
+	 */
+	private double randBetween0and100(){
+		Date time = new Date();
+		Random rand = new Random(time.getTime());
+		return rand.nextDouble() * 100; 
+	}
+	
+	
 }

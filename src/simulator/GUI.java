@@ -24,7 +24,7 @@ public class GUI extends JFrame implements KeyListener {
 		//TODO initialise the window to however it should look
 		
 		//Example of how an element of the GUI would get the data that it needs from the rest of the game.
-		ctrlSoft.uidata.getPowerOutput();
+		ctrlSoft.getPowerOutput();
 		
 		//Example of seting a pumps RPM via the operator software.
 		ctrlSoft.setPumpRpm(1, 1000);
