@@ -1,6 +1,8 @@
 package simulator;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import model.HighScore;
 
@@ -8,12 +10,34 @@ public class OperatorSoftware {
 
 	private PlantController controller;
 	protected UIData uidata;
-	 
+	private boolean OSFailed;
+	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
+	
 	public OperatorSoftware(PlantController controller){
 		this.controller = controller;
 		this.uidata = controller.getUIData();
+		this.OSFailed = false;
 	}
 	
+	/*
+	 * ---------------- Methods about the operator software ------------------------
+	 */
+	/**
+	 * Determine whether the Operator Software has failed.
+	 * Calculate a random number between 0 and 100 (percent) 
+	 * If the random number generator is less that the failure chance constant, set the OS to failed.
+	 */
+	public void calculateOSFailed(){
+		Date time = new Date();
+		Random rand = new Random(time.getTime());
+		Double randomNumber = rand.nextDouble() * 100; //Make it a percentage
+		if(randomNumber < RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE)
+			OSFailed = true;
+	}
+	
+	public void rebootOS(){
+		OSFailed = false;
+	}
 	
 	
 	/* ------------------- Control Software Pass-though Methods ------------------------
@@ -141,6 +165,7 @@ public class OperatorSoftware {
 	 */
 	public void step(int numSteps) {
 		// TODO may want to do something other than just pass through
+		calculateOSFailed();
 		controller.step(numSteps);
 	}
 	
