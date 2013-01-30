@@ -1,0 +1,5 @@
+Things that need to be (Unit) tested (tick off as completed):
+	- Each of the pass through methods (when the Operator Software is not failed)
+	- Each of the pass through methods (when the OS has failed) {STILL TO BE IMPLEMENTED}
+	- Random number generator failing the plant at the same chance as specified buy the failure chance constant (currently 10%)
+	
