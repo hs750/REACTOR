@@ -1,6 +1,7 @@
 GUI needs button / some way for the user to:
 	- Game Play
 		- Step / Pause (depending on what we decide)
+		- Operator Name
 		- Controlling components
 			- Set valve (on/off)
 			- Set Pump RPM (or pump on off (probably not both))
