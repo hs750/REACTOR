@@ -34,7 +34,9 @@ public class OperatorSoftware {
 		if(randomNumber < RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE)
 			OSFailed = true;
 	}
-	
+	/**
+	 * Repairs the Operator Software or "Reboots" it - sets OSFailed to false.
+	 */
 	public void rebootOS(){
 		OSFailed = false;
 	}
@@ -45,6 +47,18 @@ public class OperatorSoftware {
 	 * If the Operator Software is functioning they will pass though the given argument(s) normally
 	 * If however the operator software has 'Failed' then the argument that is passed though will be 'Random'
 	 */
+	
+	/**
+	 * Advance the game by a number of time steps.
+	 * If the game reaches a game over state before all steps are executed,
+	 * the game stops stepping.
+	 * @param numSteps number of timesteps to advance the game by.
+	 */
+	public void step(int numSteps) {
+		// TODO may want to do something other than just pass through
+		calculateOSFailed();
+		controller.step(numSteps);
+	}
 	
 	/**
 	 * Creates a new Game - used in UI to start a new game.
@@ -96,6 +110,10 @@ public class OperatorSoftware {
 		return controller.addHighScore(newHighScore);
 	}
 	
+	/*
+	 * -------------___ Methods affected by the Operator Software Failing ____________________
+	 */
+	
 	/**
 	 * Returns true if command was successful, false if a valve with that ID was not found
 	 * @return true if command was successful, false if a valve with that ID was not found
@@ -138,6 +156,10 @@ public class OperatorSoftware {
 		controller.setControlRods(percentageLowered);
 	}
 	
+	/*
+	 * ----------------------------- Repair Components ----------------------
+	 * Excludes Operator software. See above section for methods about OS.
+	 */
 	/**
 	 * Start the repair of the turbine if it has failed.
 	 * @return true only if the turbine has failed and is not already being repaired.
@@ -155,18 +177,6 @@ public class OperatorSoftware {
 	public boolean repairPump(int pumpID) {
 		// TODO Implement some sort of check
 		return controller.repairPump(pumpID);
-	}
-	
-	/**
-	 * Advance the game by a number of time steps.
-	 * If the game reaches a game over state before all steps are executed,
-	 * the game stops stepping.
-	 * @param numSteps number of timesteps to advance the game by.
-	 */
-	public void step(int numSteps) {
-		// TODO may want to do something other than just pass through
-		calculateOSFailed();
-		controller.step(numSteps);
 	}
 	 
 }
