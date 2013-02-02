@@ -16,10 +16,17 @@ public class OperatorSoftware {
 	private boolean OSFailed;
 	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
 	
+	//Random Generator used for creating random numbers when the Operator Software has failed.
+	Date time;
+	Random rand;
+	
 	public OperatorSoftware(PlantController controller){
 		this.controller = controller;
 		this.uidata = controller.getUIData();
 		this.OSFailed = false;
+		
+		this.time = new Date();
+		this.rand = new Random(time.getTime());
 	}
 	
 	/*
@@ -41,7 +48,8 @@ public class OperatorSoftware {
 	public void rebootOS(){
 		OSFailed = false;
 	}
-	
+	public boolean isOSFailed() {return OSFailed;}
+	public void setOSFailed(boolean OSFailed) {this.OSFailed = OSFailed;}
 	
 	/* ------------------- Control Software Pass-though Methods  ------------------------
 	 * These methods are intended to be called by the GUI.
@@ -248,9 +256,11 @@ public class OperatorSoftware {
 		boolean[] positions = new boolean[valves.size()];
 		int i = 0;
 		for(Valve valve : valves){
-			if(OSFailed)
+			if(OSFailed){	
 				positions[i] = randBoolean();
-			positions[i] = valve.isOpen();
+			}else{
+				positions[i] = valve.isOpen();
+				}
 			i++;
 		}
 		return positions;
@@ -261,9 +271,11 @@ public class OperatorSoftware {
 		int[] Rpms = new int[pumps.size()];
 		int i = 0;
 		for(Pump pump : pumps){
-			if(OSFailed)
+			if(OSFailed){
 				Rpms[i] = randIntBetween0and100() * 10; // RPM is between 0 and 1000
-			Rpms[i] = pump.getRpm();
+			}else{
+				Rpms[i] = pump.getRpm();
+			}
 			i++;
 		}
 		return Rpms;
@@ -273,12 +285,28 @@ public class OperatorSoftware {
 		boolean[] functional = new boolean[pumps.size()];
 		int i = 0;
 		for(Pump pump : pumps){
-			if(OSFailed)
+			if(OSFailed){
 				functional[i] = randBoolean();
-			functional[i] = pump.isOperational();
+			}else{
+				functional[i] = pump.isOperational();
+			}
 			i++;
 		}
 		return functional;
+	}
+	public boolean[] arePumpsOn(){
+		List<Pump> pumps = uidata.getPumps();
+		boolean[] on = new boolean[pumps.size()];
+		int i = 0;
+		for(Pump pump : pumps){
+			if(OSFailed){
+				on[i] = randBoolean();
+			}else{
+				on[i] = pump.isOn();
+			}
+			i++;
+		}
+		return on;
 	}
 	public int getTurbineRpm() {
 		if(OSFailed)
@@ -305,7 +333,6 @@ public class OperatorSoftware {
 	 * @return true only if the turbine has failed and is not already being repaired.
 	 */
 	public boolean repairTurbine() {
-		// TODO Implement some sort of check perhaps
 		return controller.repairTurbine();
 	}
 	
@@ -315,7 +342,6 @@ public class OperatorSoftware {
 	 * @return true only if the pump is found, has failed and is not already being repaired.
 	 */
 	public boolean repairPump(int pumpID) {
-		// TODO Implement some sort of check
 		return controller.repairPump(pumpID);
 	}
 	
@@ -327,18 +353,13 @@ public class OperatorSoftware {
 	 * @return Random Number
 	 */
 	private double randDoubleBetween0and100(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
 		return rand.nextDouble() * 100; 
 	}
 	private int randIntBetween0and100(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
-		return rand.nextInt() * 100; 
+		int randI = rand.nextInt() % 100;	
+		return (randI < 0 ? randI * (-1) : randI);
 	}
 	private boolean randBoolean(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
 		return rand.nextBoolean();
 	}
 	
