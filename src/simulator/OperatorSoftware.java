@@ -177,7 +177,10 @@ public class OperatorSoftware {
 			setRandomComponent();
 		controller.setControlRods(percentageLowered);
 	}
-	
+	/**
+	 * Sets a random component to a random value. Used when setting component values while the Operator Software is not functional.
+	 * @return true if setting component was successful, otherwise false.
+	 */
 	private boolean setRandomComponent(){
 		int componentType = rand.nextInt(2); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
 		switch(componentType){
@@ -246,6 +249,11 @@ public class OperatorSoftware {
 		return uidata.getControlRodsPercentage();
 	}
 	
+	/**
+	 * Gets the position of all of the valves within the power plant. 
+	 * The index of the array indicates the ID-1 of the valve.
+	 * @return Valve positions.
+	 */
 	public boolean[] getValvePositions() {
 		List<Valve> valves = uidata.getValves();
 		boolean[] positions = new boolean[valves.size()];
@@ -260,7 +268,11 @@ public class OperatorSoftware {
 		}
 		return positions;
 	}
-	
+	/**
+	 * Gets the RPMs of all the pumps in the power plant.
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump RPMs
+	 */
 	public int[] getPumpRpms() {
 		List<Pump> pumps = uidata.getPumps();
 		int[] Rpms = new int[pumps.size()];
@@ -275,7 +287,11 @@ public class OperatorSoftware {
 		}
 		return Rpms;
 	}
-	
+	/**
+	 * Gets the functionality of all the pumps in the power plant. true = operational. 
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump functionalities
+	 */
 	public boolean[] arePumpsFunctional(){
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] functional = new boolean[pumps.size()];
@@ -290,7 +306,11 @@ public class OperatorSoftware {
 		}
 		return functional;
 	}
-	
+	/**
+	 * Gets whether pumps are on or off for all the pumps in the power plant. true = on.
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump on/off
+	 */
 	public boolean[] arePumpsOn(){
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] on = new boolean[pumps.size()];
@@ -364,16 +384,23 @@ public class OperatorSoftware {
 	 * ----------------- Utility Functions -----------------------------------
 	 */
 	/**
-	 * Generates a random number between 0 and 100
-	 * @return Random Number
+	 * Generates a random double between 0 and 100
+	 * @return The andom Number
 	 */
 	private double randDoubleBetween0and100(){
 		return rand.nextDouble() * 100; 
 	}
+	/**
+	 * Generates a random integer between 0 and 100
+	 * @return The random number
+	 */
 	private int randIntBetween0and100(){
-		return rand.nextInt(100);	
-		
+		return rand.nextInt(101);	
 	}
+	/**
+	 * Generates a random boolean value
+	 * @return The random value
+	 */
 	private boolean randBoolean(){
 		return rand.nextBoolean();
 	}
