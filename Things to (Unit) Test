@@ -1,8 +1,15 @@
 Things that need to be (Unit) tested (tick off as completed):
+
+Operator software:
 	- Each of the pass through methods (when the Operator Software is not failed)
 		- Setting and getting data to / from plant.
-	- Each of the pass through methods (when the OS has failed) {STILL TO BE IMPLEMENTED}
-		- Setting and getting data to / from plant.
+	- Each of the pass through methods (when the OS has failed)
+		- Setting should set random component to random value.
+		- Getting should display random value of the correct type.
 		- Should check numbers are random.
 	- Random number generator failing the plant at the same chance as specified buy the failure chance constant (currently 10%)
+	- Repairing components via operator software.
+	- saving / loading via operator software
+	- Rebooting operator software (should set the os to not failed.)
 	
+GUI:
