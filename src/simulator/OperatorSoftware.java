@@ -204,46 +204,55 @@ public class OperatorSoftware {
 	 */
 	
 	public int getReactorHealth() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorHealth();
 	}
 	public int getReactorTemperature() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorTemperature(); 
 	}
 	public int getReactorPressure() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorPressure();
 	}
 	public int getReactorWaterVolume() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorWaterVolume();
 	}
 	public int getCondenserHealth() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserHealth();
 	}
 	public int getCondenserTemperature() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserTemperature();
 	}
 	public int getCondenserPressure() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserPressure();
 	}
 	public int getCondenserWaterVolume() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserWaterVolume();
 	}
 	public int getControlRodsPercentage() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getControlRodsPercentage();
@@ -255,6 +264,7 @@ public class OperatorSoftware {
 	 * @return Valve positions.
 	 */
 	public boolean[] getValvePositions() {
+		uidata.updateUIData();
 		List<Valve> valves = uidata.getValves();
 		boolean[] positions = new boolean[valves.size()];
 		int i = 0;
@@ -274,6 +284,7 @@ public class OperatorSoftware {
 	 * @return Pump RPMs
 	 */
 	public int[] getPumpRpms() {
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		int[] Rpms = new int[pumps.size()];
 		int i = 0;
@@ -293,6 +304,7 @@ public class OperatorSoftware {
 	 * @return Pump functionalities
 	 */
 	public boolean[] arePumpsFunctional(){
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] functional = new boolean[pumps.size()];
 		int i = 0;
@@ -312,6 +324,7 @@ public class OperatorSoftware {
 	 * @return Pump on/off
 	 */
 	public boolean[] arePumpsOn(){
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] on = new boolean[pumps.size()];
 		int i = 0;
@@ -327,16 +340,19 @@ public class OperatorSoftware {
 	}
 	
 	public int getTurbineRpm() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getTurbineRpm();
 	}
 	public int getPowerOutput() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getPowerOutput();
 	}
 	public boolean isTurbineFunctional() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randBoolean();
 		return uidata.isTurbineFunctional();
@@ -404,5 +420,4 @@ public class OperatorSoftware {
 	private boolean randBoolean(){
 		return rand.nextBoolean();
 	}
-	
 }
