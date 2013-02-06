@@ -1,13 +1,8 @@
 package view;
 
-import javax.imageio.*;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 /**
  * 
  * @author Tadas
@@ -17,6 +12,10 @@ public class Renderable
 {
  public Renderable(String ImageName, int PosX, int PosY, int Height, int Width, int DepthLevel)
  {
+	 if(images == null)
+	 {
+		 images = new ImageManager();
+	 }
 	 posX = PosX;
 	 posY = PosY;
 	 width = Width;
@@ -28,11 +27,7 @@ public class Renderable
 	 startY = 0.0f;
 	 sizeX = 1.0f;
 	 sizeY = 1.0f;
-	 
-	 try {
-	     img = ImageIO.read(new File(ImageName));
-	 } catch (IOException e) {
-	 }
+	 img = images.loadImage(ImageName);
  }
  public int getPositionX()
  {
@@ -149,6 +144,6 @@ public class Renderable
  int depthLevel;
  float alpha;
  BufferedImage img;
-
+ static ImageManager images;
 }
 

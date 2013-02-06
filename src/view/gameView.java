@@ -23,7 +23,7 @@ public class gameView
 		increase.disable();
 		decrease = new IncrementButton("Step.png", 100, 200, 20, 20, -5);
 		decrease.disable();
-		switchButton = new OnOffButton("Step.png", 400, 400, 100, 50);
+		switchButton = new OnOffButton("Step.png", 400, 400, 60, 40);
 		switchButton.disable();
 		valve1 = new ViewSwitchButton("Step.png", 100, 300, 100, 50, ComponentViewState.valve, 1);
 		valve2 = new ViewSwitchButton("Step.png", 100, 400, 100, 50, ComponentViewState.valve, 2);
@@ -91,7 +91,7 @@ public class gameView
 	public void updateData()
 	{
 		valvePositions = opSoft.getValvePositions();
-		//pumpPositions = ;
+		pumpPositions = opSoft.arePumpsOn();
 		pumpRPMs = opSoft.getPumpRpms();
 	}
 	
@@ -107,6 +107,8 @@ public class gameView
 		currentView = state;
 		currentViewId = id;
 		displayedInfo = new ArrayList<Text>();
+		int startingPosX = 540;
+		int startingPosY = 100;
 		updateData();
 		FontMetrics met;
 		switch(currentView)
@@ -115,7 +117,7 @@ public class gameView
 			decrease.disable();
 			increase.disable();
 			switchButton.disable();
-			displayedInfo.add(new Text("Condenser", 500, 300, 15));
+			displayedInfo.add(new Text("Condenser", startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
 			displayedInfo.add(new Text("Pressure: " + opSoft.getCondenserPressure(), 15));
@@ -137,7 +139,7 @@ public class gameView
 			increase.enable();
 			switchButton.enable();
 			
-			displayedInfo.add(new Text("Pump " + currentViewId, 500, 300, 15));
+			displayedInfo.add(new Text("Pump " + currentViewId, startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
 			
@@ -149,13 +151,19 @@ public class gameView
 			displayedInfo.add(new Text(Integer.toString(pumpRPMs[currentViewId - 1]), 15));
 			increase.allign(displayedInfo.get(2));
 			
+			if(pumpPositions[currentViewId - 1])
+				displayedInfo.add(new Text("Running", 15));
+			else displayedInfo.add(new Text("Turned off", 15));
+			
+			displayedInfo.get(1).nextLine(displayedInfo.get(3), met);
+			displayedInfo.get(3).allign(switchButton, met);
 
 			break;
 		case reactor:
-			decrease.disable();
-			increase.disable();
+			decrease.enable();
+			increase.enable();
 			switchButton.disable();
-			displayedInfo.add(new Text("Reactor", 500, 300, 15));
+			displayedInfo.add(new Text("Reactor", startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
 			displayedInfo.add(new Text("Health: " + opSoft.getReactorHealth(), 15));
@@ -170,15 +178,19 @@ public class gameView
 			displayedInfo.add(new Text("Water Volume: " + opSoft.getReactorWaterVolume(), 15));
 			displayedInfo.get(3).nextLine(displayedInfo.get(4), met);
 			
-			displayedInfo.add(new Text("Control rod position: " + opSoft.getControlRodsPercentage(), 15));
+			displayedInfo.add(new Text("Control rod position: ", 15));
 			displayedInfo.get(4).nextLine(displayedInfo.get(5), met);
+			displayedInfo.get(5).allign(decrease, met);
+			displayedInfo.add(new Text(Integer.toString(opSoft.getControlRodsPercentage()), 15));
+			decrease.allign(increase);
+			increase.allign(displayedInfo.get(6));
 			
 			break;
 		case turbine:
 			decrease.disable();
 			increase.disable();
 			switchButton.disable();
-			displayedInfo.add(new Text("Turbine", 500, 300, 15));
+			displayedInfo.add(new Text("Turbine", startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
 			displayedInfo.add(new Text("RPM: " + opSoft.getTurbineRpm(), 15));
@@ -192,7 +204,7 @@ public class gameView
 			decrease.disable();
 			increase.disable();
 			switchButton.enable();
-			displayedInfo.add(new Text("Valve " + currentViewId, 500, 300, 15));
+			displayedInfo.add(new Text("Valve " + currentViewId, startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
 			if(valvePositions[currentViewId - 1])
@@ -270,11 +282,12 @@ public class gameView
 			try{
 				if(currentView == ComponentViewState.pump)
 					opSoft.setPumpRpm(currentViewId, pumpRPMs[currentViewId - 1] + change);
-				else opSoft.setControlRods(opSoft.getControlRodsPercentage() + change);
+				else 
+					opSoft.setControlRods(opSoft.getControlRodsPercentage() + change);
 			} catch(java.lang.IllegalArgumentException e) { }
 			
 			updateData();
-			
+			System.out.println(opSoft.getControlRodsPercentage());
 		}
 		
 		void setChange(int change)
@@ -296,8 +309,7 @@ public class gameView
 		public void doAction()
 		{
 			if(currentView == ComponentViewState.valve)
-				opSoft.setValve(currentViewId, !valvePositions[currentViewId -1]);//!valvePositions[currentViewId]);
-
+				opSoft.setValve(currentViewId, !valvePositions[currentViewId - 1]);
 			else opSoft.setPumpOnOff(currentViewId, !pumpPositions[currentViewId - 1]);
 			updateData();
 		}
@@ -306,6 +318,7 @@ public class gameView
 	void updateGraphics()
 	{
 		switchComponentView(currentView, currentViewId);
+		
 		r.queueForRendering(increase.getRenderable());
 		r.queueForRendering(decrease.getRenderable());
 		
