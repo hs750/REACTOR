@@ -29,7 +29,7 @@ public class Button extends MouseAdapter
 	public void allign(Text t)
 	{
 		t.setPosX(posX + width + 5);
-		t.setPosY(posY);
+		t.setPosY(posY + height);
 	}
 	
 	public void enable()

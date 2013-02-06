@@ -11,7 +11,7 @@ public class GUIThread implements Runnable
 	@Override
 	public void run() {
 		Window window = new Window(r);
-		//window.frame.setVisible(true);
+		
 		try {
 			r.initialize();
 		} catch (Exception e) {

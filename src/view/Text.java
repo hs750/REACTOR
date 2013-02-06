@@ -93,7 +93,7 @@ public class Text
 	{
 		int width = metrics.stringWidth(storedText);
 		b.setPosX(posX + width + 5);
-		b.setPosY(posY);
+		b.setPosY(posY - metrics.getHeight());
 	}
 	
 	public void nextLine(Text t, FontMetrics metrics)
