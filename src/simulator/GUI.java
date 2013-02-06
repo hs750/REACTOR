@@ -11,12 +11,12 @@ public class GUI extends JFrame implements KeyListener {
 
 	 private State state = State.Uninitialised;
 	 private AreYouSureCaller caller = AreYouSureCaller.NoAction;
-	 private OperatorSoftware ctrlSoft;
+	 private OperatorSoftware opSoft;
 
 	public GUI(PlantController control)
     {
     	super("REACTOR");
-    	this.ctrlSoft = new OperatorSoftware(control);
+    	this.opSoft = new OperatorSoftware(control);
         initWindow();
     }
 	
@@ -24,10 +24,10 @@ public class GUI extends JFrame implements KeyListener {
 		//TODO initialise the window to however it should look
 		
 		//Example of how an element of the GUI would get the data that it needs from the rest of the game.
-		ctrlSoft.getPowerOutput();
+		opSoft.getPowerOutput();
 		
 		//Example of seting a pumps RPM via the operator software.
-		ctrlSoft.setPumpRpm(1, 1000);
+		opSoft.setPumpRpm(1, 1000);
 		
 	}
 	

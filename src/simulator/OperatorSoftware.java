@@ -16,10 +16,17 @@ public class OperatorSoftware {
 	private boolean OSFailed;
 	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
 	
+	//Random Generator used for creating random numbers when the Operator Software has failed.
+	Date time;
+	Random rand;
+	
 	public OperatorSoftware(PlantController controller){
 		this.controller = controller;
 		this.uidata = controller.getUIData();
 		this.OSFailed = false;
+		
+		this.time = new Date();
+		this.rand = new Random(time.getTime());
 	}
 	
 	/*
@@ -41,7 +48,8 @@ public class OperatorSoftware {
 	public void rebootOS(){
 		OSFailed = false;
 	}
-	
+	public boolean isOSFailed() {return OSFailed;}
+	public void setOSFailed(boolean OSFailed) {this.OSFailed = OSFailed;}
 	
 	/* ------------------- Control Software Pass-though Methods  ------------------------
 	 * These methods are intended to be called by the GUI.
@@ -129,8 +137,8 @@ public class OperatorSoftware {
 	 * @return true if command was successful, false if a valve with that ID was not found
 	 */
 	public boolean setValve(int valveID, boolean open) {
-		
-		// TODO Implement failure
+		if(OSFailed)
+			return setRandomComponent();
 		return controller.setValve(valveID, open);
 	}
 	
@@ -139,7 +147,8 @@ public class OperatorSoftware {
 	 * @return true if command was successful, false if a pump with that ID was not found
 	 */
 	public boolean setPumpOnOff(int pumpID, boolean on) {
-		// TODO Implement failure
+		if(OSFailed)
+			return setRandomComponent();
 		return controller.setPumpOnOff(pumpID, on);
 	}
 	
@@ -151,7 +160,8 @@ public class OperatorSoftware {
 	 * @throws IllegalArgumentException if RPM is out of the allowed range (rpm < 0 || rpm > MAX_RPM).
 	 */
 	public boolean setPumpRpm(int pumpID, int rpm) throws IllegalArgumentException {
-		// TODO Implement failure
+		if(OSFailed)
+			return setRandomComponent();
 		return controller.setPumpRpm(pumpID, rpm);
 	}
 	
@@ -163,8 +173,30 @@ public class OperatorSoftware {
 	 * @param percentageLowered the new value of percentageLowered
 	 */
 	public void setControlRods(int percentageLowered) {
-		// TODO Implement failure
+		if(OSFailed)
+			setRandomComponent();
 		controller.setControlRods(percentageLowered);
+	}
+	/**
+	 * Sets a random component to a random value. Used when setting component values while the Operator Software is not functional.
+	 * @return true if setting component was successful, otherwise false.
+	 */
+	private boolean setRandomComponent(){
+		int componentType = rand.nextInt(2); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
+		switch(componentType){
+		case 0:
+			controller.setControlRods(randIntBetween0and100()); 												// set control rods to random level
+			return true;
+		case 1:
+			boolean attribute  = randBoolean();
+			if(attribute)
+				return controller.setPumpOnOff(rand.nextInt(getPumpRpms().length - 1), randBoolean());			//Set pumps randomly to on or off
+			return controller.setPumpRpm(rand.nextInt(getPumpRpms().length - 1), randIntBetween0and100() * 10); //Set pumps to random RPM
+		case 2:
+			return controller.setValve(rand.nextInt(getValvePositions().length - 1), randBoolean());			//Set valve to random position
+		default:
+			return false;
+		}
 	}
 	
 	/*
@@ -181,30 +213,15 @@ public class OperatorSoftware {
 			return randIntBetween0and100();
 		return uidata.getReactorTemperature(); 
 	}
-	public int getReactorMaxTemperature() {
-		if(OSFailed)
-			return randIntBetween0and100();
-		return uidata.getReactorMaxTemperature();
-	}
 	public int getReactorPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorPressure();
 	}
-	public int getReactorMaxPressure() {
-		if(OSFailed)
-			return randIntBetween0and100();
-		return uidata.getReactorMaxPressure();
-	}
 	public int getReactorWaterVolume() {
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorWaterVolume();
-	}
-	public int getReactorMinSafeWaterVolume() {
-		if(OSFailed)
-			return randIntBetween0and100();
-		return uidata.getReactorMinSafeWaterVolume();
 	}
 	public int getCondenserHealth() {
 		if(OSFailed)
@@ -216,20 +233,10 @@ public class OperatorSoftware {
 			return randIntBetween0and100();
 		return uidata.getCondenserTemperature();
 	}
-	public int getCondenserMaxTemperature() {
-		if(OSFailed)
-			return randIntBetween0and100();
-		return uidata.getCondenserMaxTemperature();
-	}
 	public int getCondenserPressure() {
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserPressure();
-	}
-	public int getCondenserMaxPressure() {
-		if(OSFailed)
-			return randIntBetween0and100();
-		return uidata.getCondenserMaxPressure();
 	}
 	public int getCondenserWaterVolume() {
 		if(OSFailed)
@@ -241,45 +248,84 @@ public class OperatorSoftware {
 			return randIntBetween0and100();
 		return uidata.getControlRodsPercentage();
 	}
-	//Get Pumps and getValves is not very MVC compliant, (view has to know how to interact with the component, making layout changes harder) //TODO Is there a better way to do this. {@see TextUI.updateSystemText}
-	//TODO make a note of how this had to be changed to make it so that UI, doesnt have to deal with components.
+	
+	/**
+	 * Gets the position of all of the valves within the power plant. 
+	 * The index of the array indicates the ID-1 of the valve.
+	 * @return Valve positions.
+	 */
 	public boolean[] getValvePositions() {
 		List<Valve> valves = uidata.getValves();
 		boolean[] positions = new boolean[valves.size()];
 		int i = 0;
 		for(Valve valve : valves){
-			if(OSFailed)
+			if(OSFailed){	
 				positions[i] = randBoolean();
-			positions[i] = valve.isOpen();
+			}else{
+				positions[i] = valve.isOpen();
+				}
 			i++;
 		}
 		return positions;
 	}
-	
+	/**
+	 * Gets the RPMs of all the pumps in the power plant.
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump RPMs
+	 */
 	public int[] getPumpRpms() {
 		List<Pump> pumps = uidata.getPumps();
 		int[] Rpms = new int[pumps.size()];
 		int i = 0;
 		for(Pump pump : pumps){
-			if(OSFailed)
+			if(OSFailed){
 				Rpms[i] = randIntBetween0and100() * 10; // RPM is between 0 and 1000
-			Rpms[i] = pump.getRpm();
+			}else{
+				Rpms[i] = pump.getRpm();
+			}
 			i++;
 		}
 		return Rpms;
 	}
+	/**
+	 * Gets the functionality of all the pumps in the power plant. true = operational. 
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump functionalities
+	 */
 	public boolean[] arePumpsFunctional(){
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] functional = new boolean[pumps.size()];
 		int i = 0;
 		for(Pump pump : pumps){
-			if(OSFailed)
+			if(OSFailed){
 				functional[i] = randBoolean();
-			functional[i] = pump.isOperational();
+			}else{
+				functional[i] = pump.isOperational();
+			}
 			i++;
 		}
 		return functional;
 	}
+	/**
+	 * Gets whether pumps are on or off for all the pumps in the power plant. true = on.
+	 * The index of the array indicates the ID-1 of the pump.
+	 * @return Pump on/off
+	 */
+	public boolean[] arePumpsOn(){
+		List<Pump> pumps = uidata.getPumps();
+		boolean[] on = new boolean[pumps.size()];
+		int i = 0;
+		for(Pump pump : pumps){
+			if(OSFailed){
+				on[i] = randBoolean();
+			}else{
+				on[i] = pump.isOn();
+			}
+			i++;
+		}
+		return on;
+	}
+	
 	public int getTurbineRpm() {
 		if(OSFailed)
 			return randIntBetween0and100();
@@ -305,7 +351,6 @@ public class OperatorSoftware {
 	 * @return true only if the turbine has failed and is not already being repaired.
 	 */
 	public boolean repairTurbine() {
-		// TODO Implement some sort of check perhaps
 		return controller.repairTurbine();
 	}
 	
@@ -315,30 +360,48 @@ public class OperatorSoftware {
 	 * @return true only if the pump is found, has failed and is not already being repaired.
 	 */
 	public boolean repairPump(int pumpID) {
-		// TODO Implement some sort of check
 		return controller.repairPump(pumpID);
 	}
-	
+	/*
+	 * --------------- Max and Min values for Reactor and Condenser ------------
+	 */
+	public int getCondenserMaxPressure() {
+		return uidata.getCondenserMaxPressure();
+	}
+	public int getReactorMaxTemperature() {
+		return uidata.getReactorMaxTemperature();
+	}
+	public int getReactorMaxPressure() {
+		return uidata.getReactorMaxPressure();
+	}
+	public int getCondenserMaxTemperature() {
+		return uidata.getCondenserMaxTemperature();
+	}
+	public int getReactorMinSafeWaterVolume() {
+		return uidata.getReactorMinSafeWaterVolume();
+	}
 	/*
 	 * ----------------- Utility Functions -----------------------------------
 	 */
 	/**
-	 * Generates a random number between 0 and 100
-	 * @return Random Number
+	 * Generates a random double between 0 and 100
+	 * @return The andom Number
 	 */
 	private double randDoubleBetween0and100(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
 		return rand.nextDouble() * 100; 
 	}
+	/**
+	 * Generates a random integer between 0 and 100
+	 * @return The random number
+	 */
 	private int randIntBetween0and100(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
-		return rand.nextInt() * 100; 
+		return rand.nextInt(101);	
 	}
+	/**
+	 * Generates a random boolean value
+	 * @return The random value
+	 */
 	private boolean randBoolean(){
-		Date time = new Date();
-		Random rand = new Random(time.getTime());
 		return rand.nextBoolean();
 	}
 	
