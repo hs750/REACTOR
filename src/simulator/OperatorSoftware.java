@@ -14,7 +14,7 @@ public class OperatorSoftware {
 	private PlantController controller;
 	private UIData uidata;
 	private boolean OSFailed;
-	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
+	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 1; //10% chance of failure
 	
 	//Random Generator used for creating random numbers when the Operator Software has failed.
 	Date time;
