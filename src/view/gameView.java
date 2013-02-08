@@ -54,8 +54,6 @@ public class gameView
 		r.registerButton(step);
 		currentView = ComponentViewState.reactor;
 		currentViewId = 0;
-		
-		this.run();
 	}
 		
 	

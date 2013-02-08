@@ -25,6 +25,7 @@ public class GameInit {
 		utils = new ReactorUtils();
 		controller = new PlantController(utils);
 		view = new gameView(controller);
+		view.run();
 	}
 	
 	@SuppressWarnings("unused")
