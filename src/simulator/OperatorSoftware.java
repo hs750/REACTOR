@@ -74,6 +74,7 @@ public class OperatorSoftware {
 	 */
 	public void newGame(String operatorName) {
 		controller.newGame(operatorName);
+		uidata = controller.getUIData();
 	}
 	
 	/**
@@ -90,7 +91,10 @@ public class OperatorSoftware {
 	 * @return true if loading a game was successful, false otherwise.
 	 */
 	public boolean loadGame() {
-		return controller.loadGame();
+		boolean loadSuccess = controller.loadGame();
+		if(loadSuccess)
+			uidata = controller.getUIData();
+		return loadSuccess;
 	}
 	
 	/**
