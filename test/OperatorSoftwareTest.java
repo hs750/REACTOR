@@ -433,4 +433,52 @@ public class OperatorSoftwareTest {
 	/*
 	 *------------------- Component Functionality and Repair Tests ---------------------- 
 	 */
+	@Test
+	public void testArePumpsFunctional(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			boolean actualFunc = controller.getPlant().getPumps().get(i).isOperational();
+			boolean OSFunc = OS.arePumpsFunctional()[i];
+			assertEquals("Pump " + (i + 1), actualFunc, OSFunc);
+		}
+	}
+	@Test
+	public void testIsTurbineFunctional(){
+		boolean actualFunc = controller.getPlant().getTurbine().isOperational();
+		boolean OSFunc = OS.isTurbineFunctional();
+		assertEquals(actualFunc, OSFunc);
+	}
+	@Test
+	public void testRepairTurbine(){
+		while(OS.isTurbineFunctional()) //Keep stepping through game until Turbine randomly breaks.
+			controller.step(1);
+		OS.repairTurbine();
+		controller.step(controller.getPlant().getTurbine().getRepairTime());
+		assertEquals(true, controller.getPlant().getTurbine().isOperational());
+	}
+	@Test
+	public void testRepairPumps(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			try {setUp();} catch (Exception e) {e.printStackTrace();}
+			while(OS.arePumpsFunctional()[i])			//Keep stepping through game until Pump randomly breaks.
+				controller.step(1);	
+			OS.repairPump(i+1);
+			controller.step(controller.getPlant().getPumps().get(i).getRepairTime());
+			assertEquals(true, controller.getPlant().getPumps().get(i).isOperational());
+		}
+	}
+	@Test
+	public void testRebootOS(){
+		int numOSFailedAttempts = 0;
+		while(!OS.isOSFailed()){
+			OS.calculateOSFailed();
+			numOSFailedAttempts++;
+		}
+		assertEquals(true, OS.isOSFailed());
+		assertTrue(""+ numOSFailedAttempts, numOSFailedAttempts < 200); //1 in 100 calcs should fail OS (at time of making test)
+		OS.rebootOS();
+		assertEquals(false, OS.isOSFailed());
+	}
+	
 }
