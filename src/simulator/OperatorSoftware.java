@@ -182,7 +182,7 @@ public class OperatorSoftware {
 	 * @return true if setting component was successful, otherwise false.
 	 */
 	private boolean setRandomComponent(){
-		int componentType = rand.nextInt(2); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
+		int componentType = rand.nextInt(3); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
 		switch(componentType){
 		case 0:
 			controller.setControlRods(randIntBetween0and100()); 												// set control rods to random level
