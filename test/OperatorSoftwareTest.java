@@ -27,7 +27,7 @@ public class OperatorSoftwareTest {
 	}
 
 	/*
-	 * ----------------Test Setter Methods when OS is operational -----------------------------
+	 * ----------------Test Component Setter Methods when OS is operational -----------------------------
 	 */
 	
 	@Test
@@ -92,7 +92,7 @@ public class OperatorSoftwareTest {
 	}
 	
 	/*
-	 * ----------------Test Setter Methods when OS is not operational -----------------------------
+	 * ----------------Test Component Setter Methods when OS is not operational -----------------------------
 	 */
 	
 	@Test
@@ -159,4 +159,278 @@ public class OperatorSoftwareTest {
 		assertTrue("" + correct, correct < 100); //Control rods should be very rarely set to the correct position. 
 	}
 	
+	/*
+	 * ----------------------Test Component Getter Methods when OS is functional ---------------------------
+	 */
+	@Test
+	public void testGetReactorHealth(){
+		int actualHealth = controller.getPlant().getReactor().getHealth();
+		int OSHealth = OS.getReactorHealth();
+		assertEquals(actualHealth, OSHealth);
+	}
+	@Test
+	public void testGetReactorTemperature(){
+		int actualTemp = controller.getPlant().getReactor().getTemperature();
+		int OSTemp = OS.getReactorTemperature();
+		assertEquals(actualTemp, OSTemp);
+	}
+	@Test
+	public void testGetReactorPressure(){
+		int actualPressure = controller.getPlant().getReactor().getPressure();
+		int OSPressure = OS.getReactorPressure();
+		assertEquals(actualPressure, OSPressure);
+	}
+	@Test
+	public void testGetReactorWaterVolume(){
+		int actualVol = controller.getPlant().getReactor().getWaterVolume();
+		int OSVol = OS.getReactorWaterVolume();
+		assertEquals(actualVol, OSVol);
+	}
+	@Test
+	public void testGetCondenserHealth(){
+		int actualHealth = controller.getPlant().getCondenser().getHealth();
+		int OSHealth = OS.getCondenserHealth();
+		assertEquals(actualHealth, OSHealth);
+	}
+	@Test
+	public void testGetCondenserTemperature(){
+		int actualTemp = controller.getPlant().getCondenser().getTemperature();
+		int OSTemp = OS.getCondenserTemperature();
+		assertEquals(actualTemp, OSTemp);
+	}
+	@Test
+	public void testGetCondenserPressure(){
+		int actualPressure = controller.getPlant().getCondenser().getPressure();
+		int OSPressure = OS.getCondenserPressure();
+		assertEquals(actualPressure, OSPressure);
+	}
+	@Test
+	public void testGetCondenserWaterVolume(){
+		int actualVol = controller.getPlant().getCondenser().getWaterVolume();
+		int OSVol = OS.getCondenserWaterVolume();
+		assertEquals(actualVol, OSVol);
+	}
+	@Test
+	public void testGetControlRodPercentage(){
+		controller.getPlant().getReactor().setPercentageLowered(50);
+		int OS_CR_Level = OS.getControlRodsPercentage();
+		assertEquals(50, OS_CR_Level);
+	}
+	@Test
+	public void testGetValvePositions(){
+		int numValves = controller.getPlant().getValves().size();
+		for(int i = 0; i < numValves; i++){
+			controller.getPlant().getValves().get(i).setOpen(false);
+			assertEquals("Valve " + (i+1),false, OS.getValvePositions()[i]);
+		}
+	}
+	@Test 
+	public void testGetPumpRpms(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			controller.getPlant().getPumps().get(i).setRpm(123);
+			assertEquals("Pump " + (i+1), 123, OS.getPumpRpms()[i]);
+		}
+	}
+	@Test
+	public void testArePumpsOn(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			controller.getPlant().getPumps().get(i).setOn(false);
+			assertEquals("Pump " + (i+1), false, OS.arePumpsOn()[i]);
+		}
+	}
+	@Test
+	public void testGetTurbineRpm(){
+		int actualRPM = controller.getPlant().getTurbine().getRpm();
+		int OS_RPM = OS.getTurbineRpm();
+		assertEquals(actualRPM, OS_RPM);
+	}
+	@Test
+	public void testGetPowerOutput(){
+		int actualOutput = controller.getPlant().getGenerator().getPowerOutput();
+		int OSOutput = OS.getPowerOutput();
+		assertEquals(actualOutput, OSOutput);
+	}
+	/*
+	 * ----------------- Test Component Getter Methods when OS is not functional ---------------------
+	 */
+	@Test
+	public void testGetReactorHealth_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualHealth = controller.getPlant().getReactor().getHealth();
+			int OSHealth = OS.getReactorHealth();
+			if(actualHealth == OSHealth)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetReactorTemperature_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualTemp = controller.getPlant().getReactor().getTemperature();
+			int OSTemp = OS.getReactorTemperature();
+			if(actualTemp == OSTemp)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetReactorPressure_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualPressure = controller.getPlant().getReactor().getPressure();
+			int OSPressure = OS.getReactorPressure();
+			if(actualPressure == OSPressure)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetReactorWaterVolume_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualVol = controller.getPlant().getReactor().getWaterVolume();
+			int OSVol = OS.getReactorWaterVolume();
+			if(actualVol == OSVol)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	
+	}
+	@Test
+	public void testGetCondenserHealth_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualHealth = controller.getPlant().getCondenser().getHealth();
+			int OSHealth = OS.getCondenserHealth();
+			if(actualHealth == OSHealth)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetCondenserTemperature_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualTemp = controller.getPlant().getCondenser().getTemperature();
+			int OSTemp = OS.getCondenserTemperature();
+			if(actualTemp == OSTemp)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetCondenserPressure_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualPressure = controller.getPlant().getCondenser().getPressure();
+			int OSPressure = OS.getCondenserPressure();
+			if(actualPressure == OSPressure)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetCondenserWaterVolume_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualVol = controller.getPlant().getCondenser().getWaterVolume();
+			int OSVol = OS.getCondenserWaterVolume();
+			if(actualVol == OSVol)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetControlRodPercentage_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			controller.getPlant().getReactor().setPercentageLowered(50);
+			int OS_CR_Level = OS.getControlRodsPercentage();
+			if(50 == OS_CR_Level)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetValvePositions_OSF(){
+		int numValves = controller.getPlant().getValves().size();
+		for(int i = 0; i < numValves; i++){
+			int correct = 0;
+			for(int j = 0; j < 100; j++){
+				OS.setOSFailed(true);
+				controller.getPlant().getValves().get(i).setOpen(false);
+				if(!OS.getValvePositions()[i])
+					correct++;
+			}
+			assertTrue("Valve:" + i + " " + correct, correct < 70); //Rarely returns the correct value
+		}
+	}
+	@Test 
+	public void testGetPumpRpms_OSF(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			int correct = 0;
+			for(int j = 0; j < 100; j++){
+				OS.setOSFailed(true);
+				controller.getPlant().getPumps().get(i).setRpm(123);
+				if(OS.getPumpRpms()[i] == 123)
+					correct++;
+			}
+			assertTrue("Pump: "+ i + " " + correct, correct < 5); //Rarely returns the correct value
+		}
+	}
+	@Test
+	public void testArePumpsOn_OSF(){
+		int numPumps = controller.getPlant().getPumps().size();
+		for(int i = 0; i < numPumps; i++){
+			int correct = 0;
+			for(int j = 0; j < 100; j++){
+				OS.setOSFailed(true);
+				controller.getPlant().getPumps().get(i).setOn(false);
+				if(!OS.arePumpsOn()[i])
+					correct++;
+			}
+			assertTrue("Pump: "+ i + " " + correct, correct < 70); //Rarely returns the correct value
+		}
+	}
+	@Test
+	public void testGetTurbineRpm_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);
+			int actualRPM = controller.getPlant().getTurbine().getRpm();
+			int OS_RPM = OS.getTurbineRpm();
+			if(actualRPM == OS_RPM)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	@Test
+	public void testGetPowerOutput_OSF(){
+		int correct = 0;
+		for(int i = 0; i < 100; i++){
+			OS.setOSFailed(true);	
+			int actualOutput = controller.getPlant().getGenerator().getPowerOutput();
+			int OSOutput = OS.getPowerOutput();
+			if(actualOutput == OSOutput)
+				correct++;
+		}
+		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
+	}
+	/*
+	 *------------------- Component Functionality and Repair Tests ---------------------- 
+	 */
 }
