@@ -175,7 +175,7 @@ public class OperatorSoftware {
 	public void setControlRods(int percentageLowered) {
 		if(OSFailed)
 			setRandomComponent();
-		controller.setControlRods(percentageLowered);
+		else controller.setControlRods(percentageLowered);
 	}
 	/**
 	 * Sets a random component to a random value. Used when setting component values while the Operator Software is not functional.
@@ -190,10 +190,10 @@ public class OperatorSoftware {
 		case 1:
 			boolean attribute  = randBoolean();
 			if(attribute)
-				return controller.setPumpOnOff(rand.nextInt(getPumpRpms().length - 1), randBoolean());			//Set pumps randomly to on or off
-			return controller.setPumpRpm(rand.nextInt(getPumpRpms().length - 1), randIntBetween0and100() * 10); //Set pumps to random RPM
+				return controller.setPumpOnOff(1 + rand.nextInt(getPumpRpms().length), randBoolean());			//Set pumps randomly to on or off
+			return controller.setPumpRpm(1 + rand.nextInt(getPumpRpms().length), randIntBetween0and100() * 10); //Set pumps to random RPM
 		case 2:
-			return controller.setValve(rand.nextInt(getValvePositions().length - 1), randBoolean());			//Set valve to random position
+			return controller.setValve(1+ rand.nextInt(getValvePositions().length), randBoolean());			//Set valve to random position
 		default:
 			return false;
 		}
