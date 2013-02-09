@@ -4,6 +4,11 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import javax.swing.event.AncestorEvent;
+
+import model.HighScore;
+
 import org.junit.Before;
 import org.junit.Test;
 import simulator.*;
@@ -480,5 +485,87 @@ public class OperatorSoftwareTest {
 		OS.rebootOS();
 		assertEquals(false, OS.isOSFailed());
 	}
-	
+	/*
+	 * -------------- Get Min/Max component values -----------------------
+	 */
+	@Test
+	public void testGetCondenserMaxPressure(){
+		int actualMax = controller.getPlant().getCondenser().getMaxPressure();
+		int OSMax = OS.getCondenserMaxPressure();
+		assertEquals(actualMax, OSMax);
+	}
+	@Test
+	public void testGetReactorMaxPresssure(){
+		int actualMax = controller.getPlant().getReactor().getMaxPressure();
+		int OSMax = OS.getReactorMaxPressure();
+		assertEquals(actualMax, OSMax);
+	}
+	@Test
+	public void testGetReactorMaxTemperature(){
+		int actualMax = controller.getPlant().getReactor().getMaxTemperature();
+		int OSMax = OS.getReactorMaxTemperature();
+		assertEquals(actualMax, OSMax);
+	}
+	@Test 
+	public void testGetCondenserMaxTemperature(){
+		int actualMax = controller.getPlant().getCondenser().getMaxTemperature();
+		int OSMax = OS.getCondenserMaxTemperature();
+		assertEquals(actualMax, OSMax);
+	}
+	@Test
+	public void testGetReactorMinSafeWaterVolume(){
+		int actualMin = controller.getPlant().getReactor().getMinSafeWaterVolume();
+		int OSMin = OS.getReactorMinSafeWaterVolume();
+		assertEquals(actualMin, OSMin);
+	}
+	/*
+	 * -------------- Other Operator Software Functionality Tests -----------------------
+	 */
+	@Test
+	public void testStep(){
+		for(int i = 1; i <= 10; i++){
+			int initialNumSteps = controller.getPlant().getTimeStepsUsed();
+			OS.step(i);
+			int newNumSteps = controller.getPlant().getTimeStepsUsed();
+			assertEquals(initialNumSteps + i , newNumSteps);
+		}
+	}
+	@Test
+	public void testNewGame_GetOperatorName(){
+		String name = "Anchovy";
+		OS.newGame(name);
+		assertEquals(name, OS.getOperatorName());
+	}
+	@Test
+	public void testSaveGame_LoadGame(){
+		String name = "Anchovy";
+		OS.newGame(name);
+		OS.saveGame();
+		try{setUp();}catch(Exception e){};
+		assertEquals(null, OS.getOperatorName());
+		OS.loadGame();
+		assertEquals(name, OS.getOperatorName());
+	}
+	@Test
+	public void testGetHighScores(){
+		assertSame(controller.getHighScores(), OS.getHighScores());
+	}
+	@Test
+	public void testAddHighScore(){
+		HighScore highScore = new HighScore("Anchovy", 9001);
+		OS.addHighScore(highScore);
+		assertTrue(controller.getHighScores().contains(highScore));
+	}
+	@Test
+	public void testScore(){
+		int actualScore = controller.getPlant().getScore();
+		int OSScore = OS.getScore();
+		assertEquals(actualScore, OSScore);
+	}
+	@Test
+	public void testIsGameOver(){
+		boolean actualStatus = controller.getPlant().isGameOver();
+		boolean OSStatus = OS.isGameOver();
+		assertEquals(actualStatus, OSStatus);
+	}
 }
