@@ -24,15 +24,17 @@ public class gameView
 		decrease = new IncrementButton("Step.png", 100, 200, 20, 20, -5);
 		decrease.disable();
 		switchButton = new OnOffButton("Step.png", 400, 400, 60, 40);
+		repair = new RepairButton("Step.png", 400, 400, 60, 40);
+		repair.disable();
 		switchButton.disable();
-		valve1 = new ViewSwitchButton("Step.png", 100, 300, 100, 50, ComponentViewState.valve, 1);
-		valve2 = new ViewSwitchButton("Step.png", 100, 400, 100, 50, ComponentViewState.valve, 2);
-		pump3 = new ViewSwitchButton("Step.png", 300, 100, 100, 50, ComponentViewState.pump, 3);
-		pump2 = new ViewSwitchButton("Step.png", 300, 200, 100, 50, ComponentViewState.pump, 2);
-		pump1 = new ViewSwitchButton("Step.png", 300, 300, 100, 50, ComponentViewState.pump, 1);
-		reactor =  new ViewSwitchButton("Step.png", 300, 400, 100, 50, ComponentViewState.reactor, 0);
-		condenser = new ViewSwitchButton("Step.png", 300, 500, 100, 50, ComponentViewState.condenser, 2);
-		turbine = new ViewSwitchButton("Step.png", 400, 100, 100, 50, ComponentViewState.turbine, 0);
+		valve1 = new ViewSwitchButton("Selector.png", 100, 300, 100, 100, ComponentViewState.valve, 1);
+		valve2 = new ViewSwitchButton("Selector.png", 100, 400, 100, 50, ComponentViewState.valve, 2);
+		pump3 = new ViewSwitchButton("Selector.png", 300, 100, 100, 50, ComponentViewState.pump, 3);
+		pump2 = new ViewSwitchButton("Selector.png", 300, 200, 100, 50, ComponentViewState.pump, 2);
+		pump1 = new ViewSwitchButton("Selector.png", 300, 300, 100, 50, ComponentViewState.pump, 1);
+		reactor =  new ViewSwitchButton("Selector.png", 300, 400, 100, 50, ComponentViewState.reactor, 0);
+		condenser = new ViewSwitchButton("Selector.png", 300, 500, 100, 50, ComponentViewState.condenser, 2);
+		turbine = new ViewSwitchButton("Selector.png", 400, 100, 100, 50, ComponentViewState.turbine, 0);
 		restartSoftware = new RestartButton("Step.png", 400, 400, 100, 50);
 		
 		g = new GUIThread(r);
@@ -52,6 +54,7 @@ public class gameView
 		r.registerButton(condenser);
 		r.registerButton(turbine);
 		r.registerButton(step);
+		r.registerButton(repair);
 		currentView = ComponentViewState.reactor;
 		currentViewId = 0;
 	}
@@ -93,6 +96,7 @@ public class gameView
 		valvePositions = opSoft.getValvePositions();
 		pumpPositions = opSoft.arePumpsOn();
 		pumpRPMs = opSoft.getPumpRpms();
+		pumpFunctional = opSoft.arePumpsFunctional();
 	}
 	
 	public static void main(String[] args)
@@ -116,6 +120,7 @@ public class gameView
 		case condenser:
 			decrease.disable();
 			increase.disable();
+			repair.disable();
 			switchButton.disable();
 			displayedInfo.add(new Text("Condenser", startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
@@ -135,6 +140,7 @@ public class gameView
 			 
 			break;
 		case pump:
+			repair.disable();
 			decrease.enable();
 			increase.enable();
 			switchButton.enable();
@@ -157,9 +163,17 @@ public class gameView
 			
 			displayedInfo.get(1).nextLine(displayedInfo.get(3), met);
 			displayedInfo.get(3).allign(switchButton, met);
+			if(!pumpFunctional[currentViewId - 1])
+			{
+				displayedInfo.add(new Text("Pump is broken.", 15));
+				displayedInfo.get(3).nextLine(displayedInfo.get(4), met);
+				displayedInfo.get(4).allign(repair, met);
+				repair.enable();
+			}
 
 			break;
 		case reactor:
+			repair.disable();
 			decrease.enable();
 			increase.enable();
 			switchButton.disable();
@@ -187,6 +201,7 @@ public class gameView
 			
 			break;
 		case turbine:
+			repair.disable();
 			decrease.disable();
 			increase.disable();
 			switchButton.disable();
@@ -198,12 +213,20 @@ public class gameView
 			
 			displayedInfo.add(new Text("Power output: " + opSoft.getPowerOutput(), 15));
 			displayedInfo.get(1).nextLine(displayedInfo.get(2), met);
+			if(!opSoft.isTurbineFunctional())
+			{
+				displayedInfo.add(new Text("Turbine is broken.", 15));
+				displayedInfo.get(2).nextLine(displayedInfo.get(3), met);
+				displayedInfo.get(3).allign(repair, met);
+				repair.enable();
+			}
 			
 			break;
 		case valve:
 			decrease.disable();
 			increase.disable();
 			switchButton.enable();
+			repair.disable();
 			displayedInfo.add(new Text("Valve " + currentViewId, startingPosX, startingPosY, 15));
 			met = r.getMetrics(displayedInfo.get(0));
 			
@@ -296,6 +319,25 @@ public class gameView
 		}
 		int change;
 	}
+	class RepairButton extends Button
+	{
+
+		public RepairButton(String imageName, int posX, int posY, int width, int height) 
+		{
+			super(imageName, posX, posY, width, height);
+		}
+		
+		@Override
+		public void doAction()
+		{
+			if(currentView ==  ComponentViewState.turbine)
+				opSoft.repairTurbine();
+			else
+			opSoft.repairPump(currentViewId);
+			updateData();
+
+		}
+	}
 	
 	class OnOffButton extends Button
 	{
@@ -305,6 +347,7 @@ public class gameView
 			super(imageName, posX, posY, width, height);
 			
 		}
+		
 		@Override
 		public void doAction()
 		{
@@ -334,6 +377,7 @@ public class gameView
 		r.queueForRendering(turbine.getRenderable());
 		r.queueForRendering(step.getRenderable());
 		r.queueForRendering(restartSoftware.getRenderable());
+		r.queueForRendering(repair.getRenderable());
 	}
 	
 	public enum ComponentViewState { pump, valve, turbine, reactor, condenser }
@@ -343,6 +387,7 @@ public class gameView
 	int currentViewId;
 	boolean [] valvePositions;
 	boolean [] pumpPositions;
+	boolean [] pumpFunctional;
 	int [] pumpRPMs;
 	
 	OperatorSoftware opSoft;
@@ -362,4 +407,5 @@ public class gameView
 	ViewSwitchButton turbine;
 	StepButton step;
 	RestartButton restartSoftware;
+	RepairButton repair;
 }

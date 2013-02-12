@@ -26,10 +26,26 @@ public class Button extends MouseAdapter
 		b.setPosX(posX + width + 5);
 		b.setPosY(posY);
 	}
+	public void allign(Button b, int space)
+	{
+		b.setPosX(posX + width + space);
+		b.setPosY(posY);
+	}
 	public void allign(Text t)
 	{
 		t.setPosX(posX + width + 5);
 		t.setPosY(posY + height);
+	}
+	public void allign(Text t, int space)
+	{
+		t.setPosX(posX + width + space);
+		t.setPosY(posY + height);
+	}
+	
+	public void nextLine(Text t)
+	{
+		t.setPosX(posX);
+		t.setPosY(posY);
 	}
 	
 	public void enable()
