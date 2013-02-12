@@ -14,7 +14,7 @@ public class OperatorSoftware {
 	private PlantController controller;
 	private UIData uidata;
 	private boolean OSFailed;
-	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 10; //10% chance of failure
+	private static double RANDOM_OPERATOR_SOFTWARE_FAILURE_CHANCE = 1; //10% chance of failure
 	
 	//Random Generator used for creating random numbers when the Operator Software has failed.
 	Date time;
@@ -74,6 +74,7 @@ public class OperatorSoftware {
 	 */
 	public void newGame(String operatorName) {
 		controller.newGame(operatorName);
+		uidata = controller.getUIData();
 	}
 	
 	/**
@@ -90,7 +91,10 @@ public class OperatorSoftware {
 	 * @return true if loading a game was successful, false otherwise.
 	 */
 	public boolean loadGame() {
-		return controller.loadGame();
+		boolean loadSuccess = controller.loadGame();
+		if(loadSuccess)
+			uidata = controller.getUIData();
+		return loadSuccess;
 	}
 	
 	/**
@@ -175,14 +179,14 @@ public class OperatorSoftware {
 	public void setControlRods(int percentageLowered) {
 		if(OSFailed)
 			setRandomComponent();
-		controller.setControlRods(percentageLowered);
+		else controller.setControlRods(percentageLowered);
 	}
 	/**
 	 * Sets a random component to a random value. Used when setting component values while the Operator Software is not functional.
 	 * @return true if setting component was successful, otherwise false.
 	 */
 	private boolean setRandomComponent(){
-		int componentType = rand.nextInt(2); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
+		int componentType = rand.nextInt(3); // Which component to sent random value to: 0 = control rods, 1 = pumps, 2 = valves
 		switch(componentType){
 		case 0:
 			controller.setControlRods(randIntBetween0and100()); 												// set control rods to random level
@@ -190,10 +194,10 @@ public class OperatorSoftware {
 		case 1:
 			boolean attribute  = randBoolean();
 			if(attribute)
-				return controller.setPumpOnOff(rand.nextInt(getPumpRpms().length - 1), randBoolean());			//Set pumps randomly to on or off
-			return controller.setPumpRpm(rand.nextInt(getPumpRpms().length - 1), randIntBetween0and100() * 10); //Set pumps to random RPM
+				return controller.setPumpOnOff(1 + rand.nextInt(getPumpRpms().length), randBoolean());			//Set pumps randomly to on or off
+			return controller.setPumpRpm(1 + rand.nextInt(getPumpRpms().length), randIntBetween0and100() * 10); //Set pumps to random RPM
 		case 2:
-			return controller.setValve(rand.nextInt(getValvePositions().length - 1), randBoolean());			//Set valve to random position
+			return controller.setValve(1+ rand.nextInt(getValvePositions().length), randBoolean());			//Set valve to random position
 		default:
 			return false;
 		}
@@ -204,46 +208,55 @@ public class OperatorSoftware {
 	 */
 	
 	public int getReactorHealth() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorHealth();
 	}
 	public int getReactorTemperature() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorTemperature(); 
 	}
 	public int getReactorPressure() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorPressure();
 	}
 	public int getReactorWaterVolume() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getReactorWaterVolume();
 	}
 	public int getCondenserHealth() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserHealth();
 	}
 	public int getCondenserTemperature() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserTemperature();
 	}
 	public int getCondenserPressure() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserPressure();
 	}
 	public int getCondenserWaterVolume() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getCondenserWaterVolume();
 	}
 	public int getControlRodsPercentage() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getControlRodsPercentage();
@@ -255,6 +268,7 @@ public class OperatorSoftware {
 	 * @return Valve positions.
 	 */
 	public boolean[] getValvePositions() {
+		uidata.updateUIData();
 		List<Valve> valves = uidata.getValves();
 		boolean[] positions = new boolean[valves.size()];
 		int i = 0;
@@ -274,6 +288,7 @@ public class OperatorSoftware {
 	 * @return Pump RPMs
 	 */
 	public int[] getPumpRpms() {
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		int[] Rpms = new int[pumps.size()];
 		int i = 0;
@@ -293,6 +308,7 @@ public class OperatorSoftware {
 	 * @return Pump functionalities
 	 */
 	public boolean[] arePumpsFunctional(){
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] functional = new boolean[pumps.size()];
 		int i = 0;
@@ -312,6 +328,7 @@ public class OperatorSoftware {
 	 * @return Pump on/off
 	 */
 	public boolean[] arePumpsOn(){
+		uidata.updateUIData();
 		List<Pump> pumps = uidata.getPumps();
 		boolean[] on = new boolean[pumps.size()];
 		int i = 0;
@@ -327,16 +344,19 @@ public class OperatorSoftware {
 	}
 	
 	public int getTurbineRpm() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getTurbineRpm();
 	}
 	public int getPowerOutput() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randIntBetween0and100();
 		return uidata.getPowerOutput();
 	}
 	public boolean isTurbineFunctional() {
+		uidata.updateUIData();
 		if(OSFailed)
 			return randBoolean();
 		return uidata.isTurbineFunctional();
@@ -404,5 +424,4 @@ public class OperatorSoftware {
 	private boolean randBoolean(){
 		return rand.nextBoolean();
 	}
-	
 }

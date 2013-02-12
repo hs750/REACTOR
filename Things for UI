@@ -24,3 +24,8 @@ GUI needs button / some way for the user to:
 		- Close
 	- Game over screen
 			
+			
+- Notes on UI Design
+	- As the health of reactor and condenser are not shown unless you click on them to display their stats, maybe whent their helth gets low a warning picture comes up? "WARNING! LOW COMPONENT HEALTH" or something?
+	  Then go to game over screen when one reaches 0?
+	- Possibly rename gameView to GUI or GameView? I think GUI as that makes it conform to the original TextUI naming. 

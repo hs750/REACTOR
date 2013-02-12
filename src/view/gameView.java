@@ -11,10 +11,10 @@ public class gameView
 {
 	Renderer r;
 	GUIThread g;
-	public gameView(OperatorSoftware opSoft)
+	public gameView(PlantController controller)
 	{
 		
-		this.opSoft = opSoft;
+		this.opSoft = new OperatorSoftware(controller);
 		r = new Renderer();
 		displayedInfo = new ArrayList<Text>();
 		updateData();
@@ -102,8 +102,7 @@ public class gameView
 	public static void main(String[] args)
 	{
 		PlantController plant = new PlantController(new ReactorUtils());
-		OperatorSoftware opSoft = new OperatorSoftware(plant);
-		gameView view = new gameView(opSoft);
+		gameView view = new gameView(plant);
 		view.run();
 	}
 	public void switchComponentView(ComponentViewState state, int id)
