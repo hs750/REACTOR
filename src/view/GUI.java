@@ -18,17 +18,17 @@ public class GUI
 		r = new Renderer();
 		displayedInfo = new ArrayList<Text>();
 		updateData();
-		step = new StepButton("Step.png", 1030, 300, 100, 100);
+		step = new StepButton("graphics/Step.png", 1030, 300, 100, 100);
 		increase = new IncrementButton("graphics/increase.png", 100, 100, 20, 20, 5);
 		increase.disable();
 		decrease = new IncrementButton("graphics/decrease.png", 100, 200, 20, 20, -5);
 		decrease.disable();
-		switchButton = new OnOffButton("Step.png", 400, 400, 60, 40);
+		switchButton = new OnOffButton("graphics/Step.png", 400, 400, 60, 40);
 		repair = new RepairButton("graphics/repair.png", 400, 400, 60, 40);
 		repair.disable();
 		switchButton.disable();
 		
-		newGame = new NewGame(new Text("New game", 0, 0, 18), "Step.png", 200, 50, 150, 50);
+		newGame = new NewGame(new Text("New game", 0, 0, 18), "graphics/Step.png", 200, 50, 150, 50);
 		radio = new RadioButton();
 		
 		restartSoftware = new RestartButton("graphics/restart.png", 1030, 400, 100, 100);
