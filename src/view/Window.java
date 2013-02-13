@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 public class Window {
 
@@ -70,7 +71,8 @@ public class Window {
 	private void initialize() 
 	{
 		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 1276, 683);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(canvas, null);
 	}

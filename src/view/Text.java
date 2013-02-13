@@ -19,6 +19,7 @@ public class Text
 		this.size = size;
 		alpha = 1.0f;
 		color = Color.black;
+		visible = true;
 	}
 	public Text(String storedText, int posX, int posY, int size)
 	{
@@ -28,6 +29,7 @@ public class Text
 		this.size = size;
 		alpha = 1.0f;
 		color = Color.black;
+		visible = true;
 	}
 	
 	public String getString()
@@ -108,7 +110,20 @@ public class Text
 		b.setPosX(posX);
 		b.setPosY(posY + height + 5);
 	}
+	
+	public void setVisibility(boolean v)
+	{
+		visible = v;
+	}
+	
+	public boolean getVisibility()
+	{
+		return visible;
+	}
+	
 	float alpha;
+	
+	boolean visible;
 	
 	Color color;
 	int size;

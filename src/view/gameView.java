@@ -18,24 +18,39 @@ public class gameView
 		r = new Renderer();
 		displayedInfo = new ArrayList<Text>();
 		updateData();
-		step = new StepButton("Step.png", 400, 300, 100, 50);
-		increase = new IncrementButton("Step.png", 100, 100, 20, 20, 5);
+		step = new StepButton("Step.png", 1030, 300, 100, 100);
+		increase = new IncrementButton("graphics/increase.png", 100, 100, 20, 20, 5);
 		increase.disable();
-		decrease = new IncrementButton("Step.png", 100, 200, 20, 20, -5);
+		decrease = new IncrementButton("graphics/decrease.png", 100, 200, 20, 20, -5);
 		decrease.disable();
 		switchButton = new OnOffButton("Step.png", 400, 400, 60, 40);
-		repair = new RepairButton("Step.png", 400, 400, 60, 40);
+		repair = new RepairButton("graphics/repair.png", 400, 400, 60, 40);
 		repair.disable();
 		switchButton.disable();
-		valve1 = new ViewSwitchButton("Selector.png", 100, 300, 100, 100, ComponentViewState.valve, 1);
-		valve2 = new ViewSwitchButton("Selector.png", 100, 400, 100, 50, ComponentViewState.valve, 2);
-		pump3 = new ViewSwitchButton("Selector.png", 300, 100, 100, 50, ComponentViewState.pump, 3);
-		pump2 = new ViewSwitchButton("Selector.png", 300, 200, 100, 50, ComponentViewState.pump, 2);
-		pump1 = new ViewSwitchButton("Selector.png", 300, 300, 100, 50, ComponentViewState.pump, 1);
-		reactor =  new ViewSwitchButton("Selector.png", 300, 400, 100, 50, ComponentViewState.reactor, 0);
-		condenser = new ViewSwitchButton("Selector.png", 300, 500, 100, 50, ComponentViewState.condenser, 2);
-		turbine = new ViewSwitchButton("Selector.png", 400, 100, 100, 50, ComponentViewState.turbine, 0);
-		restartSoftware = new RestartButton("Step.png", 400, 400, 100, 50);
+		
+		newGame = new NewGame(new Text("New game", 0, 0, 18), "Step.png", 200, 50, 150, 50);
+		radio = new RadioButton();
+		
+		restartSoftware = new RestartButton("graphics/restart.png", 1030, 400, 100, 100);
+		
+		background = new Renderable("graphics/background.png", 0, 0, 1024, 683, 0);
+		turbinePic = new Renderable("graphics/turbine.png", 486, 380, 113, 102, 102);
+		reactorPic = new Renderable("graphics/reactor.png", 30, 200, 242, 300, 102);
+		valve1Pic = new Renderable("graphics/turbine.png", 0, 0, 102, 113, 102);
+		valve2Pic = new Renderable("graphics/turbine.png", 0, 0, 102, 113, 102);
+		condenserPic = new Renderable("graphics/condenser.png", 607, 99, 202, 226, 102);
+		pump1Pic = new Renderable("graphics/pump.png", 581, 195, 54, 46, 103);
+		pump2Pic = new Renderable("graphics/pump.png", 586, 291, 54, 46, 103);
+		pump3Pic = new Renderable("graphics/pump.png", 400, 100, 54, 46, 103);
+		
+		valve1 = new ViewSwitchButton("Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ComponentViewState.valve, 1);
+		valve2 = new ViewSwitchButton("Selector.png", radio, valve2Pic.getPositionX(), valve2Pic.getPositionY(), valve2Pic.getWidth(), valve2Pic.getHeight(), ComponentViewState.valve, 2);
+		pump3 = new ViewSwitchButton("Selector.png", radio, pump3Pic.getPositionX(), pump3Pic.getPositionY(), pump3Pic.getWidth(), pump3Pic.getHeight(), ComponentViewState.pump, 3);
+		pump2 = new ViewSwitchButton("Selector.png", radio, pump2Pic.getPositionX(), pump2Pic.getPositionY(), pump2Pic.getWidth(), pump2Pic.getHeight(), ComponentViewState.pump, 2);
+		pump1 = new ViewSwitchButton("Selector.png", radio, pump1Pic.getPositionX(), pump1Pic.getPositionY(), pump1Pic.getWidth(), pump1Pic.getHeight(), ComponentViewState.pump, 1);
+		reactor =  new ViewSwitchButton("Selector.png", radio, reactorPic.getPositionX(), reactorPic.getPositionY(), reactorPic.getWidth(), reactorPic.getHeight(), ComponentViewState.reactor, 0);
+		condenser = new ViewSwitchButton("Selector.png", radio, condenserPic.getPositionX(), condenserPic.getPositionY(), condenserPic.getWidth(), condenserPic.getHeight(), ComponentViewState.condenser, 2);
+		turbine = new ViewSwitchButton("Selector.png", radio, turbinePic.getPositionX(), turbinePic.getPositionY(), turbinePic.getWidth(), turbinePic.getHeight(), ComponentViewState.turbine, 0);
 		
 		g = new GUIThread(r);
 		r.registerButton(step);
@@ -55,6 +70,7 @@ public class gameView
 		r.registerButton(turbine);
 		r.registerButton(step);
 		r.registerButton(repair);
+		r.registerButton(newGame);
 		currentView = ComponentViewState.reactor;
 		currentViewId = 0;
 	}
@@ -110,7 +126,7 @@ public class gameView
 		currentView = state;
 		currentViewId = id;
 		displayedInfo = new ArrayList<Text>();
-		int startingPosX = 540;
+		int startingPosX = 1030;
 		int startingPosY = 100;
 		updateData();
 		FontMetrics met;
@@ -272,11 +288,11 @@ public class gameView
 		}
 	} 
 	
-	class ViewSwitchButton extends Button
+	class ViewSwitchButton extends ToggleButton
 	{
-		public ViewSwitchButton(String imageName, int posX, int posY, int width, int height, ComponentViewState view, int id) 
+		public ViewSwitchButton(String imageName, RadioButton radio, int posX, int posY, int width, int height, ComponentViewState view, int id) 
 		{
-			super(imageName, posX, posY, width, height);
+			super(imageName, posX, posY, width, height, radio);
 			this.view = view;
 			this.id = id;
 		}
@@ -357,6 +373,21 @@ public class gameView
 		}
 	}
 	
+	class NewGame extends TextButton
+	{
+
+		public NewGame(Text t, String imageName, int posX, int posY, int width,
+				int height) {
+			super(t, imageName, posX, posY, width, height);
+		}
+		@Override
+		public void doAction()
+		{
+			PlantController plant = new PlantController(new ReactorUtils());
+			opSoft = new OperatorSoftware(plant);
+		}
+	}
+	
 	void updateGraphics()
 	{
 		switchComponentView(currentView, currentViewId);
@@ -366,17 +397,31 @@ public class gameView
 		
 		r.queueForRendering(switchButton.getRenderable());
 		
-		r.queueForRendering(pump1.getRenderable());
-		r.queueForRendering(pump2.getRenderable());
-		r.queueForRendering(pump3.getRenderable());
-		r.queueForRendering(valve1.getRenderable());
-		r.queueForRendering(valve2.getRenderable());
-		r.queueForRendering(reactor.getRenderable());
-		r.queueForRendering(condenser.getRenderable());
-		r.queueForRendering(turbine.getRenderable());
-		r.queueForRendering(step.getRenderable());
-		r.queueForRendering(restartSoftware.getRenderable());
-		r.queueForRendering(repair.getRenderable());
+		r.queueForRendering(pump1);
+		r.queueForRendering(pump2);
+		r.queueForRendering(pump3);
+		r.queueForRendering(valve1);
+		r.queueForRendering(valve2);
+		r.queueForRendering(reactor);
+		r.queueForRendering(condenser);
+		r.queueForRendering(turbine);
+		r.queueForRendering(step);
+		r.queueForRendering(restartSoftware);
+		r.queueForRendering(repair);
+		
+		r.queueForRendering(turbinePic);
+		r.queueForRendering(reactorPic);
+		r.queueForRendering(turbinePic);
+		r.queueForRendering(pump1Pic);
+		r.queueForRendering(pump2Pic);
+		r.queueForRendering(pump3Pic);
+		
+		r.queueForRendering(valve1Pic);
+		r.queueForRendering(valve2Pic);
+		
+		r.queueForRendering(condenserPic);
+		r.queueForRendering(background);
+		r.queueForRendering(newGame);
 	}
 	
 	public enum ComponentViewState { pump, valve, turbine, reactor, condenser }
@@ -389,6 +434,8 @@ public class gameView
 	boolean [] pumpFunctional;
 	int [] pumpRPMs;
 	
+	NewGame newGame;
+	
 	OperatorSoftware opSoft;
 	
 	IncrementButton increase;
@@ -396,6 +443,21 @@ public class gameView
 	
 	OnOffButton switchButton;
 	
+	
+	Renderable background;
+	
+	Renderable reactorPic;
+	Renderable turbinePic;
+	Renderable pump1Pic;
+	Renderable pump2Pic;
+	Renderable pump3Pic;
+	
+	Renderable valve1Pic;
+	Renderable valve2Pic;
+	
+	Renderable condenserPic;
+	
+	RadioButton radio;
 	ViewSwitchButton pump1;
 	ViewSwitchButton pump2;
 	ViewSwitchButton pump3;

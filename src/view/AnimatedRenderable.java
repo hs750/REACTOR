@@ -3,9 +3,9 @@ package view;
 public class AnimatedRenderable extends Renderable
 {
 
-	public AnimatedRenderable(String ImageName, int PosX, int PosY, int Height,
-			int Width, int DepthLevel, int numberOfFrames, int currentFrame) {
-		super(ImageName, PosX, PosY, Height, Width, DepthLevel);
+	public AnimatedRenderable(String ImageName, int PosX, int PosY, int Width,
+			int Height, int DepthLevel, int numberOfFrames, int currentFrame) {
+		super(ImageName, PosX, PosY, Width, Height, DepthLevel);
 		this.numberOfFrames = numberOfFrames;
 		frameSize = 1.0f / numberOfFrames;
 		setCurrentFrame(currentFrame);

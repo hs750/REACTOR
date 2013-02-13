@@ -6,6 +6,7 @@ import java.awt.Canvas;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -46,9 +47,18 @@ public class Renderer extends Canvas
 	
 	synchronized public void queueForRendering(Text t)
 	{
-		displayedTexts.add(t);
+		if(t.getVisibility())
+			displayedTexts.add(t);
 	}
-	
+	synchronized public void queueForRendering(TextButton b)
+	{
+		queueForRendering(b.getRenderable());
+		queueForRendering(b.getText());
+	}
+	synchronized public void queueForRendering(Button b)
+	{
+		queueForRendering(b.getRenderable());
+	}
 	synchronized public void registerButton(Button b)
 	{
 		addMouseListener(b);
@@ -60,7 +70,8 @@ public class Renderer extends Canvas
 	{
 		Graphics2D graphics = (Graphics2D) g;
 		super.paint(graphics);
-		
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
 		//graphics.drawRect(100, 100, 100 ,100);
 		Collections.sort(renderables, new RenderableComparator());
 		for(Renderable r: renderables)

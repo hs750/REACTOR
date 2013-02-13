@@ -12,7 +12,7 @@ public class Button extends MouseAdapter
 	
 	public Button(String imageName, int posX, int posY, int width, int height)
 	{
-		this.images = new AnimatedRenderable(imageName, posX, posY, height, width, 100, 3, 0);
+		this.images = new AnimatedRenderable(imageName, posX, posY, width, height, 100, 3, 0);
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;
@@ -112,7 +112,8 @@ public class Button extends MouseAdapter
 
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) 
+	{
 		super.mousePressed(e);
 		if(checkIfIntercepting(e.getX(), e.getY()))
 		{
@@ -124,7 +125,7 @@ public class Button extends MouseAdapter
 	@Override
 	public void mouseMoved(MouseEvent e) 
 	{
-		super.mousePressed(e);
+		super.mouseMoved(e);
 		boolean intersecting = checkIfIntercepting(e.getX(), e.getY());
 		if (state == buttonState.pressed || state == buttonState.mouseOver && !intersecting)
 		{

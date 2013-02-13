@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  */
 public class Renderable 
 {
- public Renderable(String ImageName, int PosX, int PosY, int Height, int Width, int DepthLevel)
+ public Renderable(String ImageName, int PosX, int PosY, int Width, int Height, int DepthLevel)
  {
 	 if(images == null)
 	 {
