@@ -20,7 +20,7 @@ public class ImageManager
 			try {
 			     im = ImageIO.read(new File(image));
 			 } catch (IOException e) {
-				 System.out.print(image + " does not exist.");
+				 System.out.print(image + " file does not exist.");
 			 }
 			imageStorage.put(image, im);
 		}
