@@ -43,14 +43,14 @@ public class gameView
 		pump2Pic = new Renderable("graphics/pump.png", 586, 291, 54, 46, 103);
 		pump3Pic = new Renderable("graphics/pump.png", 400, 100, 54, 46, 103);
 		
-		valve1 = new ViewSwitchButton("Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ComponentViewState.valve, 1);
-		valve2 = new ViewSwitchButton("Selector.png", radio, valve2Pic.getPositionX(), valve2Pic.getPositionY(), valve2Pic.getWidth(), valve2Pic.getHeight(), ComponentViewState.valve, 2);
-		pump3 = new ViewSwitchButton("Selector.png", radio, pump3Pic.getPositionX(), pump3Pic.getPositionY(), pump3Pic.getWidth(), pump3Pic.getHeight(), ComponentViewState.pump, 3);
-		pump2 = new ViewSwitchButton("Selector.png", radio, pump2Pic.getPositionX(), pump2Pic.getPositionY(), pump2Pic.getWidth(), pump2Pic.getHeight(), ComponentViewState.pump, 2);
-		pump1 = new ViewSwitchButton("Selector.png", radio, pump1Pic.getPositionX(), pump1Pic.getPositionY(), pump1Pic.getWidth(), pump1Pic.getHeight(), ComponentViewState.pump, 1);
-		reactor =  new ViewSwitchButton("Selector.png", radio, reactorPic.getPositionX(), reactorPic.getPositionY(), reactorPic.getWidth(), reactorPic.getHeight(), ComponentViewState.reactor, 0);
-		condenser = new ViewSwitchButton("Selector.png", radio, condenserPic.getPositionX(), condenserPic.getPositionY(), condenserPic.getWidth(), condenserPic.getHeight(), ComponentViewState.condenser, 2);
-		turbine = new ViewSwitchButton("Selector.png", radio, turbinePic.getPositionX(), turbinePic.getPositionY(), turbinePic.getWidth(), turbinePic.getHeight(), ComponentViewState.turbine, 0);
+		valve1 = new ViewSwitchButton("graphics/Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ComponentViewState.valve, 1);
+		valve2 = new ViewSwitchButton("graphics/Selector.png", radio, valve2Pic.getPositionX(), valve2Pic.getPositionY(), valve2Pic.getWidth(), valve2Pic.getHeight(), ComponentViewState.valve, 2);
+		pump3 = new ViewSwitchButton("graphics/Selector.png", radio, pump3Pic.getPositionX(), pump3Pic.getPositionY(), pump3Pic.getWidth(), pump3Pic.getHeight(), ComponentViewState.pump, 3);
+		pump2 = new ViewSwitchButton("graphics/Selector.png", radio, pump2Pic.getPositionX(), pump2Pic.getPositionY(), pump2Pic.getWidth(), pump2Pic.getHeight(), ComponentViewState.pump, 2);
+		pump1 = new ViewSwitchButton("graphics/Selector.png", radio, pump1Pic.getPositionX(), pump1Pic.getPositionY(), pump1Pic.getWidth(), pump1Pic.getHeight(), ComponentViewState.pump, 1);
+		reactor =  new ViewSwitchButton("graphics/Selector.png", radio, reactorPic.getPositionX(), reactorPic.getPositionY(), reactorPic.getWidth(), reactorPic.getHeight(), ComponentViewState.reactor, 0);
+		condenser = new ViewSwitchButton("graphics/Selector.png", radio, condenserPic.getPositionX(), condenserPic.getPositionY(), condenserPic.getWidth(), condenserPic.getHeight(), ComponentViewState.condenser, 2);
+		turbine = new ViewSwitchButton("graphics/Selector.png", radio, turbinePic.getPositionX(), turbinePic.getPositionY(), turbinePic.getWidth(), turbinePic.getHeight(), ComponentViewState.turbine, 0);
 		
 		g = new GUIThread(r);
 		r.registerButton(step);
