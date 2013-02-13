@@ -1,7 +1,7 @@
 package test;
 
 import simulator.*;
-import view.gameView;
+import view.GUI;
 import model.*;
 import pcomponents.*;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class PlantComponentTest {
 
-	private gameView view;
+	private GUI view;
 	private PlantController presenter; 
 	private ReactorUtils utils;
 	private Plant plant;
@@ -22,7 +22,7 @@ public class PlantComponentTest {
 		//GameInit game = new GameInit();
 		utils = new ReactorUtils();
 		presenter = new PlantController(utils);
-		view = new gameView(presenter);
+		view = new GUI(presenter);
 		plant = presenter.getPlant();
 	}
 	

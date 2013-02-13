@@ -7,11 +7,11 @@ import simulator.OperatorSoftware;
 import simulator.PlantController;
 import simulator.ReactorUtils;
 
-public class gameView 
+public class GUI 
 {
 	Renderer r;
 	GUIThread g;
-	public gameView(PlantController controller)
+	public GUI(PlantController controller)
 	{
 		
 		this.opSoft = new OperatorSoftware(controller);
@@ -118,7 +118,7 @@ public class gameView
 	public static void main(String[] args)
 	{
 		PlantController plant = new PlantController(new ReactorUtils());
-		gameView view = new gameView(plant);
+		GUI view = new GUI(plant);
 		view.run();
 	}
 	public void switchComponentView(ComponentViewState state, int id)

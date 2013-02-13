@@ -2,7 +2,7 @@ package simulator;
 
 import javax.swing.text.View;
 
-import view.gameView;
+import view.GUI;
 
 /**
  * GameInit class bootstraps the entire game.
@@ -17,14 +17,14 @@ import view.gameView;
  */
 public class GameInit {
 	
-	private gameView view;
+	private GUI view;
 	private PlantController controller;
 	private ReactorUtils utils;
 	
 	public GameInit() {
 		utils = new ReactorUtils();
 		controller = new PlantController(utils);
-		view = new gameView(controller);
+		view = new GUI(controller);
 		view.run();
 	}
 	
