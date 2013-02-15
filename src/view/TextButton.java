@@ -8,7 +8,7 @@ public abstract class TextButton extends Button
 	{
 		super(imageName, posX, posY, width, height);
 		text = t;
-		t.setPosY(posY + height/2);
+		t.setPosY(posY + height/3*2);
 		t.setPosX(posX + width/4);
 	}
 	

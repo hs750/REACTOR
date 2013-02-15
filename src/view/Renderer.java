@@ -24,6 +24,7 @@ public class Renderer extends Canvas
 		
 		renderables = new ArrayList<Renderable>();
 		displayedTexts = new ArrayList<Text>();
+		emitters = new ArrayList<ParticleEmitter>();
 	}
 	public void initialize()
 	{
@@ -59,6 +60,13 @@ public class Renderer extends Canvas
 	{
 		queueForRendering(b.getRenderable());
 	}
+	
+	synchronized public void queueForRendering(ParticleEmitter e)
+	{
+		if(e.getActive())
+			emitters.add(e);
+	}
+	
 	synchronized public void registerButton(Button b)
 	{
 		addMouseListener(b);
@@ -72,7 +80,7 @@ public class Renderer extends Canvas
 		super.paint(graphics);
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-		//graphics.drawRect(100, 100, 100 ,100);
+		
 		Collections.sort(renderables, new RenderableComparator());
 		for(Renderable r: renderables)
 		{
@@ -80,6 +88,14 @@ public class Renderer extends Canvas
 			graphics.drawImage(r.getImage(), r.getPositionX(), r.getPositionY(), r.getPositionX() + r.getWidth(), r.getPositionY() + r.getHeight(),
 					r.getSourceStartHorizontal(),r.getSourceStartVertical(), 
 					r.getSourceStartHorizontal() + r.getSourceSizeHorizontal(), r.getSourceStartVertical() + r.getSourceSizeVertical(),null);
+		}
+		for(ParticleEmitter e: emitters)
+		{
+			for(int i = 0; i != e.getAlive(); ++i)
+			{
+				graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, e.getParticles()[i].alpha));
+				graphics.drawImage(e.getRenderable().getImage(), null, e.getParticles()[i].x, e.getParticles()[i].y);
+			}
 		}
 		for(Text t: displayedTexts)
 		{
@@ -90,6 +106,7 @@ public class Renderer extends Canvas
 		}
 		renderables = new ArrayList<Renderable>();
 		displayedTexts = new ArrayList<Text>();
+		emitters = new ArrayList<ParticleEmitter>();
 	}
 	
 	public FontMetrics getMetrics(Text t)
@@ -111,4 +128,5 @@ public class Renderer extends Canvas
 	BufferStrategy strategy;
 	ArrayList<Renderable> renderables;
 	ArrayList<Text> displayedTexts;
+	ArrayList<ParticleEmitter> emitters;
 }
