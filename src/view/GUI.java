@@ -50,12 +50,14 @@ public class GUI
 		
 		
 		valve1 = new ViewSwitchButton("graphics/Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ViewState.valve, 1);
+		valve1.getRenderable().setAlpha(0.3f);
 		valve2 = new ViewSwitchButton("graphics/Selector.png", radio, valve2Pic.getPositionX(), valve2Pic.getPositionY(), valve2Pic.getWidth(), valve2Pic.getHeight(), ViewState.valve, 2);
 		
 		pump2 = new ViewSwitchButton("graphics/Selector.png", radio, pump2Pic.getPositionX(), pump2Pic.getPositionY(), pump2Pic.getWidth(), pump2Pic.getHeight(), ViewState.pump, 2);
 		pump1 = new ViewSwitchButton("graphics/Selector.png", radio, pump1Pic.getPositionX(), pump1Pic.getPositionY(), pump1Pic.getWidth(), pump1Pic.getHeight(), ViewState.pump, 1);
 		reactor =  new ViewSwitchButton("graphics/Selector.png", radio, reactorPic.getPositionX(), reactorPic.getPositionY(), reactorPic.getWidth(), reactorPic.getHeight(), ViewState.reactor, 0);
 		condenser = new ViewSwitchButton("graphics/Selector.png", radio, condenserPic.getPositionX(), condenserPic.getPositionY(), condenserPic.getWidth(), condenserPic.getHeight(), ViewState.condenser, 2);
+		condenser.getRenderable().setAlpha(0.3f);
 		turbine = new ViewSwitchButton("graphics/Selector.png", radio, turbinePic.getPositionX(), turbinePic.getPositionY(), turbinePic.getWidth(), turbinePic.getHeight(), ViewState.turbine, 0);
 		
 		radio.addButton(turbine);
@@ -199,10 +201,11 @@ public class GUI
 		@Override
 		public void doAction()
 		{
-			
+			reset();
 			PlantController plant = new PlantController(new ReactorUtils());
 			opSoft = new OperatorSoftware(plant);
-			reset();
+			sideBar.updateData();
+			
 		}
 	}
 	
