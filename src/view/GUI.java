@@ -19,7 +19,7 @@ public class GUI
 		
 		gameOver = false;
 		
-		test = new ParticleEmitter("graphics/particle.png", 13, 4,600, 500, 400, 2, -1, 0, -1, 4);
+		//test = new ParticleEmitter("graphics/particle.png", 13, 4,600, 500, 400, 2, -1, 0, -1, 4);
 		
 		step = new StepButton("graphics/step.png", 1030, 400, 100, 100);
 		
