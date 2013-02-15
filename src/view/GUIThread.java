@@ -8,9 +8,10 @@ public class GUIThread implements Runnable
 		this.r = r;
 	}
 	Renderer r;
+	public Window window;
 	@Override
 	public void run() {
-		Window window = new Window(r);
+		window = new Window(r);
 		
 		try {
 			r.initialize();

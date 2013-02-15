@@ -1,6 +1,7 @@
 package view;
 
-import model.HighScore;
+import javax.swing.JOptionPane;
+
 import simulator.OperatorSoftware;
 import simulator.PlantController;
 import simulator.ReactorUtils;
@@ -19,8 +20,12 @@ public class GUI
 		
 		gameOver = false;
 		
-		//test = new ParticleEmitter("graphics/particle.png", 13, 4,600, 500, 400, 2, -1, 0, -1, 4);
-		
+		turbineSmoke = new ParticleEmitter("graphics/particle.png", 13, 4,600, 500, 400, 2, -1, 0, -1, 4);
+		turbineSmoke.disable();
+		pump2Smoke = new ParticleEmitter("graphics/particle.png", 10, 4, 800, 592, 200, 2, -1, 0, -1, 4);
+		turbineSmoke.disable();
+		pump1Smoke = new ParticleEmitter("graphics/particle.png", 10, 4, 700, 592, 300, 2, -1, 0, -1, 4);
+		turbineSmoke.disable();
 		step = new StepButton("graphics/step.png", 1030, 400, 100, 100);
 		
 		newGame = new NewGame(new Text("New game", 0, 0, 17), "graphics/genericButton.png", 25, 10, 140, 35);
@@ -45,20 +50,25 @@ public class GUI
 		valve1Pic = new Renderable("graphics/valveUpper.png", 459, 234, 58, 43, 102);
 		valve2Pic = new Renderable("graphics/valveLower.png", 302, 385, 69, 50, 102);
 		condenserPic = new Renderable("graphics/condenser.png", 607, 99, 202, 226, 102);
-		pump1Pic = new Renderable("graphics/pump.png", 581, 195, 54, 46, 103);
-		pump2Pic = new Renderable("graphics/pump.png", 586, 291, 54, 46, 103);
+		pump1Pic = new Renderable("graphics/pump.png", 570, 200, 54, 46, 103);
+		pump2Pic = new Renderable("graphics/pump.png", 571, 296, 54, 46, 103);
 		
 		
 		valve1 = new ViewSwitchButton("graphics/Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ViewState.valve, 1);
 		valve1.getRenderable().setAlpha(0.3f);
 		valve2 = new ViewSwitchButton("graphics/Selector.png", radio, valve2Pic.getPositionX(), valve2Pic.getPositionY(), valve2Pic.getWidth(), valve2Pic.getHeight(), ViewState.valve, 2);
+		valve2.getRenderable().setAlpha(0.3f);
 		
 		pump2 = new ViewSwitchButton("graphics/Selector.png", radio, pump2Pic.getPositionX(), pump2Pic.getPositionY(), pump2Pic.getWidth(), pump2Pic.getHeight(), ViewState.pump, 2);
+		pump2.getRenderable().setAlpha(0.3f);
 		pump1 = new ViewSwitchButton("graphics/Selector.png", radio, pump1Pic.getPositionX(), pump1Pic.getPositionY(), pump1Pic.getWidth(), pump1Pic.getHeight(), ViewState.pump, 1);
+		pump1.getRenderable().setAlpha(0.3f);
 		reactor =  new ViewSwitchButton("graphics/Selector.png", radio, reactorPic.getPositionX(), reactorPic.getPositionY(), reactorPic.getWidth(), reactorPic.getHeight(), ViewState.reactor, 0);
+		reactor.getRenderable().setAlpha(0.3f);
 		condenser = new ViewSwitchButton("graphics/Selector.png", radio, condenserPic.getPositionX(), condenserPic.getPositionY(), condenserPic.getWidth(), condenserPic.getHeight(), ViewState.condenser, 2);
 		condenser.getRenderable().setAlpha(0.3f);
 		turbine = new ViewSwitchButton("graphics/Selector.png", radio, turbinePic.getPositionX(), turbinePic.getPositionY(), turbinePic.getWidth(), turbinePic.getHeight(), ViewState.turbine, 0);
+		turbine.getRenderable().setAlpha(0.3f);
 		
 		radio.addButton(turbine);
 		radio.addButton(valve1);
@@ -67,7 +77,6 @@ public class GUI
 		radio.addButton(pump2);
 		radio.addButton(reactor);
 		radio.addButton(condenser);
-		
 		
 		g = new GUIThread(r);
 		r.registerButton(step);
@@ -96,16 +105,44 @@ public class GUI
 		g.run();
 		
 		Timer time = new Timer();
-		time.stamp();
+		
 		long elapsed = 0;
-
+		operatorName = (String)JOptionPane.showInputDialog(
+                g.window.frame,
+                "Please enter new plant operator name.",
+                "New game",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "Operator name");
+		opSoft.newGame(operatorName);
+		time.stamp();
 		while(true)
 		{
 			time.stamp();
 			elapsed += time.getDelta();
 			if(elapsed >= 34)
 			{
-				test.update(elapsed);
+				
+				if(!opSoft.isTurbineFunctional() )
+				{
+					turbineSmoke.enable();
+					turbineSmoke.update(elapsed);
+				}
+				else turbineSmoke.disable();
+				if(!opSoft.arePumpsFunctional()[1])
+				{
+					pump1Smoke.enable();
+					pump1Smoke.update(elapsed);
+				}
+				else pump1Smoke.disable();
+					
+				if(!opSoft.arePumpsFunctional()[0])
+				{
+					pump2Smoke.enable();
+					pump2Smoke.update(elapsed);
+				}
+				else pump2Smoke.disable();
 				elapsed -= 34;
 				updateGraphics();
 				
@@ -201,9 +238,18 @@ public class GUI
 		@Override
 		public void doAction()
 		{
+			
 			reset();
-			PlantController plant = new PlantController(new ReactorUtils());
-			opSoft = new OperatorSoftware(plant);
+			operatorName = (String)JOptionPane.showInputDialog(
+                    g.window.frame,
+                    "Please enter new plant operator name.",
+                    "New game",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "Operator name");
+			
+			opSoft.newGame(operatorName);
 			sideBar.updateData();
 			
 		}
@@ -219,6 +265,7 @@ public class GUI
 		public void doAction()
 		{
 			reset();
+			operatorName = opSoft.getOperatorName();
 			opSoft.loadGame();
 		}
 	}
@@ -250,7 +297,6 @@ public class GUI
 	}
 	void updateGraphics()
 	{
-		
 		sideBar.updateGraphics();
 		r.queueForRendering(pump1);
 		r.queueForRendering(pump2);
@@ -278,12 +324,22 @@ public class GUI
 		r.queueForRendering(saveGame);
 		r.queueForRendering(loadGame);
 		r.queueForRendering(scoresButton);
-		r.queueForRendering(test);
+		if(!gameOver)
+		{
+			r.queueForRendering(turbineSmoke);
+			r.queueForRendering(pump1Smoke);
+			r.queueForRendering(pump2Smoke);
+		}
+		if(operatorName != null && operatorName.length() != 0)
+			r.queueForRendering(new Text ("Welcome, " +  operatorName + '!', 1030, 15, 15));
 	}
 	
 	boolean gameOver;
+	String operatorName;
+	ParticleEmitter turbineSmoke;
+	ParticleEmitter pump1Smoke;
+	ParticleEmitter pump2Smoke;
 	
-	ParticleEmitter test;
 	SideBar sideBar;
 	NewGame newGame;
 	LoadGame loadGame;

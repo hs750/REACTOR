@@ -9,7 +9,7 @@ import java.awt.Dimension;
 
 public class Window {
 
-	private JFrame frame;
+	public JFrame frame;
 	private Canvas canvas;
 
 	/**
