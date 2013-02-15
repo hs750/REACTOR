@@ -108,7 +108,7 @@ public class Text
 	{
 		int height = metrics.getHeight();
 		b.setPosX(posX);
-		b.setPosY(posY + height + 5);
+		b.setPosY(posY + height + 10);
 	}
 	
 	public void setVisibility(boolean v)

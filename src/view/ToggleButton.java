@@ -40,9 +40,15 @@ public abstract class ToggleButton extends Button
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		super.mouseClicked(e);
-		if(parent != null)
-			parent.switchToggleOthers(id);
+		if(checkIfIntercepting(e.getX(), e.getY()))
+		{
+				doAction();
+		
+			state = buttonState.pressed;
+			images.setCurrentFrame(2);
+			if(parent != null)
+				parent.switchToggleOthers(id);
+		}
 	}
 	
 	@Override
@@ -50,6 +56,7 @@ public abstract class ToggleButton extends Button
 	{
 
 	}
+	
 	public void changeToggled(boolean t)
 	{
 		if(t)

@@ -5,8 +5,11 @@ public class Particle
 	public void integrate(long deltaTime)
 	{
 		++age;
-		vx += deltaTime * ax;
-		x += deltaTime * vx;
+		vx +=  ax;
+		vy += ay;
+		x +=  vx;
+		y += vy;
+				
 	}
 	//Position
 	public int x;
