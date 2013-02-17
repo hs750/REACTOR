@@ -1,7 +1,15 @@
 package view;
-
+/**
+ * A simple class that stores all the information about a particle.
+ * @author Tadas
+ *
+ */
 public class Particle 
 {
+	/**
+	 * Applies simple newtonian physics to the particle and ages it.
+	 * @param deltaTime time that has passed since the last frame.
+	 */
 	public void integrate(long deltaTime)
 	{
 		++age;
@@ -22,6 +30,6 @@ public class Particle
 	public int ay;
 	
 	public int age;
-	
+	//transparency
 	public float alpha;
 }

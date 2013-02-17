@@ -6,7 +6,11 @@ import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
+/**
+ * Creates a new window that can display a canvas object. 
+ * @author Tadas
+ *
+ */
 public class Window {
 
 	public JFrame frame;
