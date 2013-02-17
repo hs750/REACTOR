@@ -51,7 +51,7 @@ public class GUI
 		valve2Pic = new Renderable("graphics/valveLower.png", 302, 385, 69, 50, 102);
 		condenserPic = new Renderable("graphics/condenser.png", 607, 99, 202, 226, 102);
 		pump1Pic = new Renderable("graphics/pump.png", 570, 200, 54, 46, 103);
-		pump2Pic = new Renderable("graphics/pump.png", 571, 296, 54, 46, 103);
+		pump2Pic = new Renderable("graphics/pump.png", 586, 291, 54, 46, 103);
 		
 		
 		valve1 = new ViewSwitchButton("graphics/Selector.png", radio, valve1Pic.getPositionX(), valve1Pic.getPositionY(), valve1Pic.getWidth(), valve1Pic.getHeight(), ViewState.valve, 1);
