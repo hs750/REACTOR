@@ -16,9 +16,18 @@ import java.util.Collections;
  * @author Tadas
  *
  */
+
+/**
+ * Responsible for rendering images, text and particle emitters to a canvas. User has to queue objects he wants to render every frame and call the repaint method afterwards. 
+ * @author Tadas
+ *
+ */
 @SuppressWarnings("serial")
 public class Renderer extends Canvas 
 {
+	/**
+	 * Basic constructor.
+	 */
 	public Renderer()
 	{
 		
@@ -26,11 +35,18 @@ public class Renderer extends Canvas
 		displayedTexts = new ArrayList<Text>();
 		emitters = new ArrayList<ParticleEmitter>();
 	}
+	/**
+	 * Initializes the renderer. Has to be called before renderer can be used. Has to be called after the window is visible,
+	 * which is why this method is not part of the constructor.
+	 */
 	public void initialize()
 	{
 		createBufferStrategy(2);
 		strategy = getBufferStrategy();
 	}
+	/**
+	 * This has to be called every frame to make the window update. Uses double buffering internally.
+	 */
 	@Override 
 	synchronized public void repaint()
 	{
@@ -40,39 +56,65 @@ public class Renderer extends Canvas
 		strategy.show();
 		
 	}
+	/**
+	 * Adds the object to the rendering queue to be rendered to screen on the next repaint call
+	 * @param r
+	 */
 	synchronized public void queueForRendering(Renderable r)
 	{
 		if(r.getVisibility())
 			renderables.add(r);
 	}
-	
+	/**
+	 * Adds the object to the rendering queue to be rendered to screen on the next repaint call
+	 * @param t
+	 */
 	synchronized public void queueForRendering(Text t)
 	{
 		if(t.getVisibility())
 			displayedTexts.add(t);
 	}
+	/**
+	 * Adds the object to the rendering queue to be rendered to screen on the next repaint call
+	 * @param b
+	 */
 	synchronized public void queueForRendering(TextButton b)
 	{
 		queueForRendering(b.getRenderable());
 		queueForRendering(b.getText());
 	}
+	/**
+	 * Adds the object to the rendering queue to be rendered to screen on the next repaint call
+	 * @param b
+	 */
 	synchronized public void queueForRendering(Button b)
 	{
 		queueForRendering(b.getRenderable());
 	}
-	
+	/**
+	 * Adds the object to the rendering queue to be rendered to screen on the next repaint call
+	 * @param e
+	 */
 	synchronized public void queueForRendering(ParticleEmitter e)
 	{
 		if(e.getActive())
 			emitters.add(e);
 	}
-	
+	/**
+	 * Register a button so that it would receive messages from the canvas which this renderer renders to.
+	 * @param b Button
+	 */
 	synchronized public void registerButton(Button b)
 	{
 		addMouseListener(b);
 		addMouseMotionListener(b);
 
 	}
+	/**
+	 * Renders all the queued objects every frame.
+	 * Renderables are sorted based on their depth levels and then rendered.
+	 * Text objects are rendered on top and finally the particle emitters get rendered.
+	 */
 	@Override
 	synchronized public void paint(Graphics g)  
 	{
@@ -108,7 +150,11 @@ public class Renderer extends Canvas
 		displayedTexts = new ArrayList<Text>();
 		emitters = new ArrayList<ParticleEmitter>();
 	}
-	
+	/**
+	 * Returns the font metric of the supplied text object. Used for alligning the text objects.
+	 * @param t Text object
+	 * @return
+	 */
 	public FontMetrics getMetrics(Text t)
 	{
 		Graphics2D graphics = (Graphics2D) strategy.getDrawGraphics();
@@ -117,7 +163,11 @@ public class Renderer extends Canvas
 		graphics.dispose();
 		return m;
 	}
-	
+	/**
+	 * Comparator for sorting/comparing renderables based on their depth levels.
+	 * @author Tadas
+	 *
+	 */
 	class RenderableComparator implements Comparator<Renderable> {
 	    @Override
 	    public int compare(Renderable o1, Renderable o2) 

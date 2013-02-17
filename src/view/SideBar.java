@@ -6,10 +6,18 @@ import java.util.List;
 
 import model.HighScore;
 import simulator.OperatorSoftware;
-
+/**
+ * Object that creates and manages the sidebar. It displays all the game data and allows the user to interact with certain components.
+ * @author Tadas
+ *
+ */
 public class SideBar 
 {
-	
+	/**
+	 * Initializes the sidebar.
+	 * @param r Renderer that will be used to render the sidebar.
+	 * @param soft provides data about the power plant ot the sidebar.
+	 */
 	public SideBar(Renderer r, OperatorSoftware soft)
 	{
 		this.r = r;
@@ -33,7 +41,11 @@ public class SideBar
 		currentView = ViewState.reactor;
 		currentViewId = 0;
 	}
-	
+	/**
+	 * Controls what and how will be displayed by the sidebar. Usually this change occurs after certain buttons clicks, like clicking on pumps or reactors.
+	 * @param state the new view state to be displayed
+	 * @param id ID of a component
+	 */
 	public void switchComponentView(ViewState state, int id)
 	{
 		currentView = state;
@@ -220,7 +232,9 @@ public class SideBar
 		}
 	}
 	
-	
+	/**
+	 * Updates the data about certain components. Should be called after every step/user modification of the power plant.
+	 */
 	public void updateData()
 	{
 		valvePositions = opSoft.getValvePositions();
@@ -228,7 +242,9 @@ public class SideBar
 		pumpRPMs = opSoft.getPumpRpms();
 		pumpFunctional = opSoft.arePumpsFunctional();
 	}
-	
+	/**
+	 * Queues all of its objects for rendering. Should be called every frame.
+	 */
 	public void updateGraphics()
 	{
 		switchComponentView(currentView, currentViewId);
@@ -241,16 +257,29 @@ public class SideBar
 			r.queueForRendering(t);
 		}
 	}
-	
+	/**
+	 * Button that's used for turning on/off the pumps and opening/closing valves.
+	 * @author Tadas
+	 *
+	 */
 	class OnOffButton extends Button
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automatically resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public OnOffButton(String imageName, int posX, int posY, int width, int height) 
 		{
 			super(imageName, posX, posY, width, height);
 			
 		}
-		
+		/**
+		 * Called whenever the button is  clicked. Flips the states of either a pump or a valve, depending on the current view
+		 */
 		@Override
 		public void doAction()
 		{
@@ -270,13 +299,23 @@ public class SideBar
 	}
 	class IncrementButton extends Button
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 * @param change How much a certain value will be incremented (or decrement if change is negative) after every click. What gets changed depends on the currentView.
+		 */
 		public IncrementButton(String imageName, int posX, int posY, int width, int height, int change) 
 		{
 			super(imageName, posX, posY, width, height);
 			this.change = change;
 		}
-		
+		/**
+		 * Called whenever the button is clicked. Increments/decrements RPMs or control rod levels, based on the current view.
+		 */
 		@Override
 		public void doAction()
 		{
@@ -306,14 +345,28 @@ public class SideBar
 		}
 		int change;
 	}
+	/**
+	 * Button object. Repairs either turbine, pump or condenser pump based on the current view when clicked.
+	 * @author Tadas
+	 *
+	 */
 	class RepairButton extends Button
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public RepairButton(String imageName, int posX, int posY, int width, int height) 
 		{
 			super(imageName, posX, posY, width, height);
 		}
-		
+		/**
+		 * Called whenever the button is clicked. Repairs either turbine, pump or condenser pump based on the current view.
+		 */
 		@Override
 		public void doAction()
 		{
