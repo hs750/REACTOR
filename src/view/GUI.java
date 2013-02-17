@@ -7,10 +7,20 @@ import simulator.PlantController;
 import simulator.ReactorUtils;
 import view.SideBar.ViewState;
 
+/**
+ * Responsible for initializing the game look and feel, hooking up buttons to OS messages and running the main game loop.
+ * @author Tadas
+ *
+ */
 public class GUI 
 {
 	Renderer r;
 	GUIThread g;
+	
+	/**
+	 * Initializes all the graphics and UI side of things
+	 * @param controller reference to the plant controller that will be represented by the GUI.
+	 */
 	public GUI(PlantController controller)
 	{
 		
@@ -99,7 +109,10 @@ public class GUI
 		
 	}
 		
-	
+	/**
+	 * Main game loop. Tracks the time that has passed between each cycle. Asks the user to enter a new operator name first.
+	 * This function must be run to actually start rendering and updating the window
+	 */
 	public void run()
 	{
 		g.run();
@@ -121,9 +134,9 @@ public class GUI
 		{
 			time.stamp();
 			elapsed += time.getDelta();
-			if(elapsed >= 34)
+			if(elapsed >= 34) //In milliseconds, which means ~30 fps
 			{
-				
+				//Smoke effects work only if the corresponding components are broken
 				if(!opSoft.isTurbineFunctional() )
 				{
 					turbineSmoke.enable();
@@ -151,19 +164,21 @@ public class GUI
 		}
 	}
 	
+	/**
+	 *  Returns a reference to the renderer, ideally does not need to be used at all.
+	 * @return reference to the main renderer
+	 */
 	public Renderer getRenderer()
 	{
 		return r;
 	}
 	
-	public static void main(String[] args)
-	{
-		PlantController plant = new PlantController(new ReactorUtils());
-		GUI view = new GUI(plant);
-		view.run();
-	}
-	
-	public void reset()
+
+	/**
+	 * Resets a bunch of internal values that get set when the game over screen is reached. 
+	 * Gets called whenever a new game is started or loaded. 
+	 */
+	void reset()
 	{
 		radio.enableButtons();
 		step.enable();
@@ -172,14 +187,31 @@ public class GUI
 		
 	}
 	
+	/**
+	 * Implements Step button functionality. Whenever the button is clicked a call is made to the simulation code.
+	 * After every step checks are made to make sure that the game is not over.
+	 * @author Tadas
+	 *
+	 */
 	class StepButton extends Button
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public StepButton(String imageName, int posX, int posY, int width, int height) 
 		{
 			super(imageName, posX, posY, width, height);
 			
 		}
+		
+		/**
+		 * Gets called when the button is clicked. 'Steps' the simulation, update the interface with the new data and checks if the game is over.
+		 */
 		@Override
 		public void doAction()
 		{
@@ -196,29 +228,63 @@ public class GUI
 		}
 	}
 	
+	/**
+	 * Button for restarting the operator software.
+	 * @author Tadas
+	 *
+	 */
 	class RestartButton extends Button
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public RestartButton(String imageName, int posX, int posY, int width, int height) 
 		{
 			super(imageName, posX, posY, width, height);
 			
 		}
 		@Override
+		/**
+		 * Restarts the operator software. Called whenever the button is clicked.
+		 */
 		public void doAction()
 		{
 			opSoft.rebootOS();
 		}
 	} 
-	
+	/**
+	 * These buttons are used for changing the content to be displayed in the sidebar.
+	 * Normally tied to certain components.
+	 * @author Tadas
+	 *
+	 */
 	class ViewSwitchButton extends ToggleButton
 	{
+		/**
+		 * Initiliazes the button
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 * @param view the type of new view
+		 * @param id used for types like pumps and valves to recognise which component is being interacted with
+		 */
 		public ViewSwitchButton(String imageName, RadioButton radio, int posX, int posY, int width, int height, ViewState view, int id) 
 		{
 			super(imageName, posX, posY, width, height, radio);
 			this.view = view;
 			this.id = id;
 		}
+		/**
+		 * Called whenever the buttons is clicked.
+		 * Informs the sidebar that it needs to change its data.
+		 */
 		@Override
 		public void doAction()
 		{
@@ -227,10 +293,22 @@ public class GUI
 		int id;
 		ViewState view;
 	}
-	
+	/**
+	 * Button makes the operator software create a new power plant.
+	 * @author Tadas
+	 *
+	 */
 	class NewGame extends TextButton
 	{
-
+		/**
+		 * Initiliazes the button
+		 * @param t Text object associated with the button.
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public NewGame(Text t, String imageName, int posX, int posY, int width,
 				int height) {
 			super(t, imageName, posX, posY, width, height);
@@ -255,12 +333,30 @@ public class GUI
 		}
 	}
 	
+	/**
+	 * Button object. When clicked makes the operator software load a previously saved instance of the game.
+	 * @author Tadas
+	 *
+	 */
 	class LoadGame extends TextButton
 	{
+		/**
+		 * Initiliazes the button
+		 * @param t Text object associated with the button.
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public LoadGame(Text t, String imageName, int posX, int posY, int width,
 				int height) {
 			super(t, imageName, posX, posY, width, height);
 		}
+		/**
+		 * Called whenever the button is clicked.
+		 * Loads a new instance of the game.
+		 */
 		@Override
 		public void doAction()
 		{
@@ -269,32 +365,70 @@ public class GUI
 			opSoft.loadGame();
 		}
 	}
+	/**
+	 * Button object. Whenever the button is clicked it makes the operator software save the current state of the game to a save file.
+	 * @author Tadas
+	 *
+	 */
 	class SaveGame extends TextButton
 	{
+		/**
+		 * Initiliazes the button
+		 * @param t Text object associated with the button.
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public SaveGame(Text t, String imageName, int posX, int posY, int width,
 				int height) {
 			super(t, imageName, posX, posY, width, height);
 		}
+		/**
+		 * Called whenever the button is clicked.
+		 * Saves the game state to a file.
+		 */
 		@Override
 		public void doAction()
 		{
 			opSoft.saveGame();
 		}
 	}
-	
+	/**
+	 * Button object. Switches the sidebar view to the highscore list.
+	 * @author Tadas
+	 *
+	 */
 	class ScoresButton extends TextButton
 	{
+		/**
+		 * Initiliazes the button
+		 * @param t Text object associated with the button.
+		 * @param imageName name of the image associated with the button
+		 * @param posX horizontal coordinates of the upper left corner of the button.
+		 * @param posY vertical coordinates of the upper left corner of the button.
+		 * @param width button's width. will automaticaly resize the supplied picture based on this value.
+		 * @param height button's height. will automatically resize the supplied picture based on this value.
+		 */
 		public ScoresButton(Text t, String imageName, int posX, int posY, int width,
 				int height) {
 			super(t, imageName, posX, posY, width, height);
 		}
+		/**
+		 * Called whenever the button is clicked. Switches the sidebar view to highscores.
+		 */
 		@Override
 		public void doAction()
 		{
 			sideBar.switchComponentView(ViewState.scores, 0);
-			radio.switchToggleOthers(-1);
+			radio.switchToggleOthers(-1); //Deselects all highlighted components
 		}
 	}
+	/**
+	 * Adds all the objects that need to be rendered to the rendering queue.
+	 * Automatically called in the run() function every frame.
+	 */
 	void updateGraphics()
 	{
 		sideBar.updateGraphics();
