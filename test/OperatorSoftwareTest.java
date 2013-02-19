@@ -23,6 +23,10 @@ public class OperatorSoftwareTest {
 	private PlantController controller;
 	private ReactorUtils utils;
 	
+	/**
+	 * Create the instances of Reactor Utilities, Plant Controller, and Operator Software needed for the tests on the Operator Software.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		utils = new ReactorUtils();
@@ -34,7 +38,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------Test Component Setter Methods when OS is operational -----------------------------
 	 */
-	
+	/**
+	 * Tests whether calling setValve() in operator software, when the operator software is functional, successfully sets the specified valve to the specified position. All valves are individually tested within this test.
+	 * Pass Criteria: Every valve in the plant is changed from being open to being closed after.
+	 */
 	@Test
 	public void testSetValve() {
 		int numValves = controller.getPlant().getValves().size();
@@ -44,6 +51,10 @@ public class OperatorSoftwareTest {
 			assertEquals("After: valve " + (i + 1), false, controller.getPlant().getValves().get(i).isOpen());		//check they are not cloesd
 		}
 	}
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is functional, successfully sets the specified pump. All pumps are individually tested within this test.
+	 * Pass Criteria: Every pump in the power plant will be set to off. 
+	 */
 	@Test
 	public void testSetPumpOnOff(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -53,7 +64,13 @@ public class OperatorSoftwareTest {
 			assertEquals("After: Pump " + (i + 1), false, controller.getPlant().getPumps().get(i).isOn());		//check pumps are off
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpRpm() in operator software, when the operator software is functional, successfully sets the specified pump's RPM. All pumps are individually tested within this test.
+	 * Pass Criteria: 
+	 * 		Every pump will not be set below 0 RPM
+	 * 		Every pump will be set to a legal RPM value (the mid value between 0 and a pumps max rpm
+	 * 		Every pump will not be set to a value above the max RPM of the pump.
+	 */
 	@Test
 	public void testSetPumpRpm(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -79,7 +96,13 @@ public class OperatorSoftwareTest {
 			}
 		}
 	}
-	
+	/**
+	 * Tests whether calling setControlRods() in operator software, when the operator software is functional, successfully sets the control rods to a specified level.
+	 * Pass Criteria: 
+	 * 		Control rods will not be set to a level below 0
+	 * 		Control rods will be set to a legal level (50)
+	 * 		Control rods will not be set to a level above 100
+	 */
 	@Test
 	public void testSetControllRods(){
 		OS.setControlRods(-1);
@@ -99,7 +122,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------Test Component Setter Methods when OS is not operational -----------------------------
 	 */
-	
+	/**
+	 * Tests whether calling setValve() in operator software, when the operator software is not functional, does not set the specified valve to the specified position. All valves are individually tested within this test.
+	 * Pass Criteria: Less than all the valve should be set to closed.
+	 */
 	@Test
 	public void testSetValve_OSF() {
 		
@@ -117,6 +143,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + closed, closed < 100); //valve should not always be set correctly.
 		}
 	}
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is not functional, does not set the specified pump. All pumps are individually tested within this test.
+	 * Pass Criteria: Less than all the pumps should be set to off. 
+	 */
 	@Test
 	public void testSetPumpOnOff_OSF(){
 		OS.setOSFailed(true);
@@ -132,7 +162,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + off, off < 100); //pump should not always be set correctly.
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpRPM() in operator software, when the operator software is not functional, does not set the specified pump to the specified RPM. All pumps are individually tested within this test.
+	 * Pass Criteria: Less than all the pumps should be set to 50 RPM.
+	 */
 	@Test
 	public void testSetPumpRpm_OSF(){
 		OS.setOSFailed(true);
@@ -149,7 +182,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + correct, correct < 100); //pump should not always be set correctly - Incredibly unlikely. 
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is not functional, does not set the control rods to the specifed level.
+	 * Pass Criteria: In 100 attempts at setting the control rods, not all will set the control rods to 50. 
+	 */
 	@Test
 	public void testSetControllRods_OSF(){
 		OS.setOSFailed(true);
@@ -167,60 +203,100 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------------Test Component Getter Methods when OS is functional ---------------------------
 	 */
+	/**
+	 * Tests getReactorHealth() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The health value from the reactor matches that returned by getReactorHealth()
+	 */
 	@Test
 	public void testGetReactorHealth(){
 		int actualHealth = controller.getPlant().getReactor().getHealth();
 		int OSHealth = OS.getReactorHealth();
 		assertEquals(actualHealth, OSHealth);
 	}
+	/**
+	 * Tests getReactorTemperature() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The temperature value from the reactor matches that returned by getReactorTemperature()
+	 */
 	@Test
 	public void testGetReactorTemperature(){
 		int actualTemp = controller.getPlant().getReactor().getTemperature();
 		int OSTemp = OS.getReactorTemperature();
 		assertEquals(actualTemp, OSTemp);
 	}
+	/**
+	 * Tests getReactorPressure() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The pressure value from the reactor matches that returned by getReactorPressure()
+	 */
 	@Test
 	public void testGetReactorPressure(){
 		int actualPressure = controller.getPlant().getReactor().getPressure();
 		int OSPressure = OS.getReactorPressure();
 		assertEquals(actualPressure, OSPressure);
 	}
+	/**
+	 * Tests getReactorWaterLevel() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The water level value from the reactor matches that returned by getReactorWaterLevel()
+	 */
 	@Test
 	public void testGetReactorWaterVolume(){
 		int actualVol = controller.getPlant().getReactor().getWaterVolume();
 		int OSVol = OS.getReactorWaterVolume();
 		assertEquals(actualVol, OSVol);
 	}
+	/**
+	 * Tests getCondenserHealth() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The health value from the condenser matches that returned by getCondenserHealth()
+	 */
 	@Test
 	public void testGetCondenserHealth(){
 		int actualHealth = controller.getPlant().getCondenser().getHealth();
 		int OSHealth = OS.getCondenserHealth();
 		assertEquals(actualHealth, OSHealth);
 	}
+	/**
+	 * Tests getCondenserTemperature() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The temperature value from the condenser matches that returned by getCondenserTemperature()
+	 */
 	@Test
 	public void testGetCondenserTemperature(){
 		int actualTemp = controller.getPlant().getCondenser().getTemperature();
 		int OSTemp = OS.getCondenserTemperature();
 		assertEquals(actualTemp, OSTemp);
 	}
+	/**
+	 * Tests getCondenserPressure() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The pressure value from the condenser matches that returned by getCondenserPressure()
+	 */
 	@Test
 	public void testGetCondenserPressure(){
 		int actualPressure = controller.getPlant().getCondenser().getPressure();
 		int OSPressure = OS.getCondenserPressure();
 		assertEquals(actualPressure, OSPressure);
 	}
+	/**
+	 * Tests getCondenserWaterLevel() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The water level value from the condenser matches that returned by getCondenserWaterLevel()
+	 */
 	@Test
 	public void testGetCondenserWaterVolume(){
 		int actualVol = controller.getPlant().getCondenser().getWaterVolume();
 		int OSVol = OS.getCondenserWaterVolume();
 		assertEquals(actualVol, OSVol);
 	}
+	/**
+	 * Tests getControlRodPercentage() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: value returned by getControlRodPercentage() matches the value that the control rods level was manually set to (50).
+	 */
 	@Test
 	public void testGetControlRodPercentage(){
 		controller.getPlant().getReactor().setPercentageLowered(50);
 		int OS_CR_Level = OS.getControlRodsPercentage();
 		assertEquals(50, OS_CR_Level);
 	}
+	/**
+	 * Tests getValvePositions() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every valve will be set to closed and then getValvePosition() will return false
+	 */
 	@Test
 	public void testGetValvePositions(){
 		int numValves = controller.getPlant().getValves().size();
@@ -229,6 +305,10 @@ public class OperatorSoftwareTest {
 			assertEquals("Valve " + (i+1),false, OS.getValvePositions()[i]);
 		}
 	}
+	/**
+	 * Tests getPumpRpms() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every pump's RPM will be set to 123 and then getPumpRpms() will return 123
+	 */
 	@Test 
 	public void testGetPumpRpms(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -237,6 +317,10 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i+1), 123, OS.getPumpRpms()[i]);
 		}
 	}
+	/**
+	 * Tests arePumpsOn() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every pump is set to off and then arePumpsOn() will return false
+	 */
 	@Test
 	public void testArePumpsOn(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -245,12 +329,20 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i+1), false, OS.arePumpsOn()[i]);
 		}
 	}
+	/**
+	 * Tests getTurbineRpm() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The RPM value from the Turbine in the power plant will be the same as that returned by getTurbineRpm()
+	 */
 	@Test
 	public void testGetTurbineRpm(){
 		int actualRPM = controller.getPlant().getTurbine().getRpm();
 		int OS_RPM = OS.getTurbineRpm();
 		assertEquals(actualRPM, OS_RPM);
 	}
+	/**
+	 * Tests getPowerOutput() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The power output value from the Generator in the power plant will be the same as that returned by getPowerOutput()
+	 */
 	@Test
 	public void testGetPowerOutput(){
 		int actualOutput = controller.getPlant().getGenerator().getPowerOutput();
@@ -259,6 +351,10 @@ public class OperatorSoftwareTest {
 	}
 	/*
 	 * ----------------- Test Component Getter Methods when OS is not functional ---------------------
+	 */
+	/**
+	 * Tests getReactorHealth() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The health value from the reactor doesnt match that returned by getReactorHealth() in 95 out of 100 get operations. 
 	 */
 	@Test
 	public void testGetReactorHealth_OSF(){
@@ -272,6 +368,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorTemperature() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The temperature value from the reactor doesnt match that returned by getReactorTemperature() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorTemperature_OSF(){
 		int correct = 0;
@@ -284,6 +384,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorPressure() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The pressure value from the reactor doesnt match that returned by getReactorPressure() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorPressure_OSF(){
 		int correct = 0;
@@ -296,6 +400,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorWaterLevel() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The water level value from the reactor doesnt match that returned by getReactorLevel() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorWaterVolume_OSF(){
 		int correct = 0;
@@ -309,6 +417,10 @@ public class OperatorSoftwareTest {
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	
 	}
+	/**
+	 * Tests getCondenserHealth() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The health value from the condenser doesn't match that returned by getCondenserHealth() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserHealth_OSF(){
 		int correct = 0;
@@ -321,6 +433,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserTemperature() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The temperature value from the condenser doesn't match that returned by getCondenserTemperature() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserTemperature_OSF(){
 		int correct = 0;
@@ -333,6 +449,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserPressure() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The pressure value from the condenser doesn't match that returned by getCondenserPressure() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserPressure_OSF(){
 		int correct = 0;
@@ -345,6 +465,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserWaterLevel() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The water level value from the condenser doesn't match that returned by getCondenserWaterLevel() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserWaterVolume_OSF(){
 		int correct = 0;
@@ -357,6 +481,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getControlRodPercentage() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: value returned by getControlRodPercentage() does not match the value that the control rods level was manually set to (50), in 95 out of 100 get operations.
+	 */
 	@Test
 	public void testGetControlRodPercentage_OSF(){
 		int correct = 0;
@@ -369,6 +497,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getValvePositions() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every valve will be set to closed and then getValvePosition() will return false only 70% of the time.
+	 */
 	@Test
 	public void testGetValvePositions_OSF(){
 		int numValves = controller.getPlant().getValves().size();
@@ -383,6 +515,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Valve:" + i + " " + correct, correct < 70); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests getPUmpsRpms() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every pump's RPM will be set to 123 and then getValvePosition() will return 123 only 5% of the time.
+	 */
 	@Test 
 	public void testGetPumpRpms_OSF(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -397,6 +533,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Pump: "+ i + " " + correct, correct < 5); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests arePUmpsOn() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every pump will be set to off and then arePumpsOn() will return false only 70% of the time.
+	 */
 	@Test
 	public void testArePumpsOn_OSF(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -411,6 +551,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Pump: "+ i + " " + correct, correct < 70); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests getTurbineRpm() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The RPM value from the Turbine in the power plant will not be the same as that returned by getTurbineRpm() in 95% of method calls.
+	 */
 	@Test
 	public void testGetTurbineRpm_OSF(){
 		int correct = 0;
@@ -423,6 +567,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getPowerOuput() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The power output value from the Generator in the power plant will not be the same as that returned by getPowerOutput() in 95% of method calls.
+	 */
 	@Test
 	public void testGetPowerOutput_OSF(){
 		int correct = 0;
@@ -438,6 +586,10 @@ public class OperatorSoftwareTest {
 	/*
 	 *------------------- Component Functionality and Repair Tests ---------------------- 
 	 */
+	/**
+	 * Tests arePumpsFunctional() in operator software.
+	 * Pass Criteria: For every pump, the value returned by arePumpsFunctional() will be the same as the actual functionality value of the pump.
+	 */
 	@Test
 	public void testArePumpsFunctional(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -447,12 +599,20 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i + 1), actualFunc, OSFunc);
 		}
 	}
+	/**
+	 * Tests isTurbineFunctional() in operator software.
+	 * Pass Criteria: The value returned by isTurbineFunctional() will be the same as the actual functionality value of the turbine.
+	 */
 	@Test
 	public void testIsTurbineFunctional(){
 		boolean actualFunc = controller.getPlant().getTurbine().isOperational();
 		boolean OSFunc = OS.isTurbineFunctional();
 		assertEquals(actualFunc, OSFunc);
 	}
+	/**
+	 * Tests repairTurbine() in operator software.
+	 * Pass Criteria: After the required number of game steps to repair a Turbine, a non operational turbine will become operational.
+	 */
 	@Test
 	public void testRepairTurbine(){
 		while(OS.isTurbineFunctional()) //Keep stepping through game until Turbine randomly breaks.
@@ -461,6 +621,10 @@ public class OperatorSoftwareTest {
 		controller.step(controller.getPlant().getTurbine().getRepairTime());
 		assertEquals(true, controller.getPlant().getTurbine().isOperational());
 	}
+	/**
+	 * Tests repairPump() in operator software.
+	 * Pass Criteria: For each pump in the plant, after the required number of game steps to repair a pump, the non operational pump will become operational.
+	 */
 	@Test
 	public void testRepairPumps(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -473,6 +637,10 @@ public class OperatorSoftwareTest {
 			assertEquals(true, controller.getPlant().getPumps().get(i).isOperational());
 		}
 	}
+	/**
+	 * Tests rebootOs() in operator software.
+	 * Pass Criteria: After calling rebootOS() on a failed OperatorSoftware, the Operator Software will be functional.
+	 */
 	@Test
 	public void testRebootOS(){
 		int numOSFailedAttempts = 0;
@@ -488,30 +656,50 @@ public class OperatorSoftwareTest {
 	/*
 	 * -------------- Get Min/Max component values -----------------------
 	 */
+	/**
+	 * Tests getCondenserMaxPressure() in operator Software.
+	 * Pass Criteria: The value returned by getCondenserMaxPressure() will be the same as that returned by condenser.getMaxPressure()
+	 */
 	@Test
 	public void testGetCondenserMaxPressure(){
 		int actualMax = controller.getPlant().getCondenser().getMaxPressure();
 		int OSMax = OS.getCondenserMaxPressure();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMaxPressure() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMaxPressure() will be the same as that returned by reactor.getMaxPressure()
+	 */
 	@Test
 	public void testGetReactorMaxPresssure(){
 		int actualMax = controller.getPlant().getReactor().getMaxPressure();
 		int OSMax = OS.getReactorMaxPressure();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMaxTemperature() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMaxTemperature() will be the same as that returned by reactor.getMaxTemperature()
+	 */
 	@Test
 	public void testGetReactorMaxTemperature(){
 		int actualMax = controller.getPlant().getReactor().getMaxTemperature();
 		int OSMax = OS.getReactorMaxTemperature();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getCondenserMaxTemperature() in operator Software.
+	 * Pass Criteria: The value returned by getCondenserMaxTemperature() will be the same as that returned by condenser.getMaxTemperature()
+	 */
 	@Test 
 	public void testGetCondenserMaxTemperature(){
 		int actualMax = controller.getPlant().getCondenser().getMaxTemperature();
 		int OSMax = OS.getCondenserMaxTemperature();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMinSafeWaterVolume() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMinSafeWaterVolume() will be the same as that returned by reactor.getMinSafeWaterVolume()
+	 */
 	@Test
 	public void testGetReactorMinSafeWaterVolume(){
 		int actualMin = controller.getPlant().getReactor().getMinSafeWaterVolume();
@@ -520,6 +708,10 @@ public class OperatorSoftwareTest {
 	}
 	/*
 	 * -------------- Other Operator Software Functionality Tests -----------------------
+	 */
+	/**
+	 * Tests Step() in operator software.
+	 * Pass Criteria: The number of steps recorded by the plant will increase by one after step() is called.
 	 */
 	@Test
 	public void testStep(){
@@ -530,12 +722,20 @@ public class OperatorSoftwareTest {
 			assertEquals(initialNumSteps + i , newNumSteps);
 		}
 	}
+	/**
+	 * Tests newGame() and getOperatorName() in operator software. 
+	 * Pass Criteria: The operator name returned by getOperatorName() is the same as the name passed as a parameter to newGame();
+	 */
 	@Test
 	public void testNewGame_GetOperatorName(){
 		String name = "Anchovy";
 		OS.newGame(name);
 		assertEquals(name, OS.getOperatorName());
 	}
+	/**
+	 * Tests loadSaveGame() and LoadGame() in operatorSoftware. A new game is started, the game is saved, then a new new game is started. The old game is then loaded. The operator names in the saved game and the loaded game should be the same. 
+	 * Pass Criteria: The game loaded is the same as the saved game.
+	 */
 	@Test
 	public void testSaveGame_LoadGame(){
 		String name = "Anchovy";
@@ -546,22 +746,38 @@ public class OperatorSoftwareTest {
 		OS.loadGame();
 		assertEquals(name, OS.getOperatorName());
 	}
+	/**
+	 * Tests getHighScores() in Operator Software.
+	 * Pass Criteria: The high scores returned by getHighScores() from the operator software match those returned by getHighScores from Plant Controller
+	 */
 	@Test
 	public void testGetHighScores(){
 		assertSame(controller.getHighScores(), OS.getHighScores());
 	}
+	/**
+	 * Tests addHighScore() in operator software. Creates and adds a high score the the list of high scores.
+	 * Pass Criteria: The list of high scores contains the high score added by addHighScore()
+	 */
 	@Test
 	public void testAddHighScore(){
 		HighScore highScore = new HighScore("Anchovy", 9001);
 		OS.addHighScore(highScore);
 		assertTrue(controller.getHighScores().contains(highScore));
 	}
+	/**
+	 * Tests getScore() in operator software.
+	 * Pass Criteria: The value returned by getScore() in operator software is the same as that returned by getScore() in the plant.
+	 */
 	@Test
 	public void testScore(){
 		int actualScore = controller.getPlant().getScore();
 		int OSScore = OS.getScore();
 		assertEquals(actualScore, OSScore);
 	}
+	/**
+	 * Tests isGameOver in operator software.
+	 * Pass Criteria: The value returned by isGameOver in operator software is the same as that returned by isGameOver in the plant.
+	 */
 	@Test
 	public void testIsGameOver(){
 		boolean actualStatus = controller.getPlant().isGameOver();
