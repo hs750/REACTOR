@@ -46,7 +46,7 @@ public class SideBar
 	 * @param state the new view state to be displayed
 	 * @param id ID of a component
 	 */
-	public void switchComponentView(ViewState state, int id)
+	synchronized public void switchComponentView(ViewState state, int id)
 	{
 		currentView = state;
 		currentViewId = id;
