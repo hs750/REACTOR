@@ -352,6 +352,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------- Test Component Getter Methods when OS is not functional ---------------------
 	 */
+	/**
+	 * Tests getReactorHealth() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The health value from the reactor doesnt match that returned by getReactorHealth() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorHealth_OSF(){
 		int correct = 0;
@@ -364,6 +368,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorTemperature() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The temperature value from the reactor doesnt match that returned by getReactorTemperature() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorTemperature_OSF(){
 		int correct = 0;
@@ -376,6 +384,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorPressure() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The pressure value from the reactor doesnt match that returned by getReactorPressure() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorPressure_OSF(){
 		int correct = 0;
@@ -388,6 +400,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getReactorWaterLevel() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The water level value from the reactor doesnt match that returned by getReactorLevel() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetReactorWaterVolume_OSF(){
 		int correct = 0;
@@ -401,6 +417,10 @@ public class OperatorSoftwareTest {
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	
 	}
+	/**
+	 * Tests getCondenserHealth() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The health value from the condenser doesn't match that returned by getCondenserHealth() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserHealth_OSF(){
 		int correct = 0;
@@ -413,6 +433,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserTemperature() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The temperature value from the condenser doesn't match that returned by getCondenserTemperature() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserTemperature_OSF(){
 		int correct = 0;
@@ -425,6 +449,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserPressure() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The pressure value from the condenser doesn't match that returned by getCondenserPressure() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserPressure_OSF(){
 		int correct = 0;
@@ -437,6 +465,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getCondenserWaterLevel() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The water level value from the condenser doesn't match that returned by getCondenserWaterLevel() in 95 out of 100 get operations. 
+	 */
 	@Test
 	public void testGetCondenserWaterVolume_OSF(){
 		int correct = 0;
@@ -449,6 +481,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getControlRodPercentage() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: value returned by getControlRodPercentage() does not match the value that the control rods level was manually set to (50), in 95 out of 100 get operations.
+	 */
 	@Test
 	public void testGetControlRodPercentage_OSF(){
 		int correct = 0;
@@ -461,6 +497,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getValvePositions() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every valve will be set to closed and then getValvePosition() will return false only 70% of the time.
+	 */
 	@Test
 	public void testGetValvePositions_OSF(){
 		int numValves = controller.getPlant().getValves().size();
@@ -475,6 +515,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Valve:" + i + " " + correct, correct < 70); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests getPUmpsRpms() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every pump's RPM will be set to 123 and then getValvePosition() will return 123 only 5% of the time.
+	 */
 	@Test 
 	public void testGetPumpRpms_OSF(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -489,6 +533,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Pump: "+ i + " " + correct, correct < 5); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests arePUmpsOn() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: Every pump will be set to off and then arePumpsOn() will return false only 70% of the time.
+	 */
 	@Test
 	public void testArePumpsOn_OSF(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -503,6 +551,10 @@ public class OperatorSoftwareTest {
 			assertTrue("Pump: "+ i + " " + correct, correct < 70); //Rarely returns the correct value
 		}
 	}
+	/**
+	 * Tests getTurbineRpm() in Operator Software, when Operator Software is not functional.
+	 * Pass Criteria: The RPM value from the Turbine in the power plant will not be the same as that returned by getTurbineRpm() in 95% of method calls.
+	 */
 	@Test
 	public void testGetTurbineRpm_OSF(){
 		int correct = 0;
@@ -515,6 +567,10 @@ public class OperatorSoftwareTest {
 		}
 		assertTrue(""+ correct, correct < 5); //Rarely returns the correct value
 	}
+	/**
+	 * Tests getPowerOuput() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The power output value from the Generator in the power plant will not be the same as that returned by getPowerOutput() in 95% of method calls.
+	 */
 	@Test
 	public void testGetPowerOutput_OSF(){
 		int correct = 0;
