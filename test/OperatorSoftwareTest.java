@@ -23,6 +23,10 @@ public class OperatorSoftwareTest {
 	private PlantController controller;
 	private ReactorUtils utils;
 	
+	/**
+	 * Create the instances of Reactor Utilities, Plant Controller, and Operator Software needed for the tests on the Operator Software.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		utils = new ReactorUtils();
@@ -34,7 +38,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------Test Component Setter Methods when OS is operational -----------------------------
 	 */
-	
+	/**
+	 * Tests whether calling setValve() in operator software, when the operator software is functional, successfully sets the specified valve to the specified position. All valves are individually tested within this test.
+	 * Pass Criteria: Every valve in the plant is changed from being open to being closed after.
+	 */
 	@Test
 	public void testSetValve() {
 		int numValves = controller.getPlant().getValves().size();
@@ -44,6 +51,10 @@ public class OperatorSoftwareTest {
 			assertEquals("After: valve " + (i + 1), false, controller.getPlant().getValves().get(i).isOpen());		//check they are not cloesd
 		}
 	}
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is functional, successfully sets the specified pump. All pumps are individually tested within this test.
+	 * Pass Criteria: Every pump in the power plant will be set to off. 
+	 */
 	@Test
 	public void testSetPumpOnOff(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -53,7 +64,13 @@ public class OperatorSoftwareTest {
 			assertEquals("After: Pump " + (i + 1), false, controller.getPlant().getPumps().get(i).isOn());		//check pumps are off
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpRpm() in operator software, when the operator software is functional, successfully sets the specified pump's RPM. All pumps are individually tested within this test.
+	 * Pass Criteria: 
+	 * 		Every pump will not be set below 0 RPM
+	 * 		Every pump will be set to a legal RPM value (the mid value between 0 and a pumps max rpm
+	 * 		Every pump will not be set to a value above the max RPM of the pump.
+	 */
 	@Test
 	public void testSetPumpRpm(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -79,7 +96,13 @@ public class OperatorSoftwareTest {
 			}
 		}
 	}
-	
+	/**
+	 * Tests whether calling setControlRods() in operator software, when the operator software is functional, successfully sets the control rods to a specified level.
+	 * Pass Criteria: 
+	 * 		Control rods will not be set to a level below 0
+	 * 		Control rods will be set to a legal level (50)
+	 * 		Control rods will not be set to a level above 100
+	 */
 	@Test
 	public void testSetControllRods(){
 		OS.setControlRods(-1);
@@ -99,7 +122,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * ----------------Test Component Setter Methods when OS is not operational -----------------------------
 	 */
-	
+	/**
+	 * Tests whether calling setValve() in operator software, when the operator software is not functional, does not set the specified valve to the specified position. All valves are individually tested within this test.
+	 * Pass Criteria: Less than all the valve should be set to closed.
+	 */
 	@Test
 	public void testSetValve_OSF() {
 		
@@ -117,6 +143,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + closed, closed < 100); //valve should not always be set correctly.
 		}
 	}
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is not functional, does not set the specified pump. All pumps are individually tested within this test.
+	 * Pass Criteria: Less than all the pumps should be set to off. 
+	 */
 	@Test
 	public void testSetPumpOnOff_OSF(){
 		OS.setOSFailed(true);
@@ -132,7 +162,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + off, off < 100); //pump should not always be set correctly.
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpRPM() in operator software, when the operator software is not functional, does not set the specified pump to the specified RPM. All pumps are individually tested within this test.
+	 * Pass Criteria: Less than all the pumps should be set to 50 RPM.
+	 */
 	@Test
 	public void testSetPumpRpm_OSF(){
 		OS.setOSFailed(true);
@@ -149,7 +182,10 @@ public class OperatorSoftwareTest {
 			assertTrue("" + correct, correct < 100); //pump should not always be set correctly - Incredibly unlikely. 
 		}
 	}
-	
+	/**
+	 * Tests whether calling setPumpOnOff() in operator software, when the operator software is not functional, does not set the control rods to the specifed level.
+	 * Pass Criteria: In 100 attempts at setting the control rods, not all will set the control rods to 50. 
+	 */
 	@Test
 	public void testSetControllRods_OSF(){
 		OS.setOSFailed(true);
@@ -166,6 +202,10 @@ public class OperatorSoftwareTest {
 	
 	/*
 	 * ----------------------Test Component Getter Methods when OS is functional ---------------------------
+	 */
+	/**
+	 * Tests getReactorHealth() in Operator Software.
+	 * Pass Criteria: plant.reactor.getHealth() == OS.getReactorHealth()
 	 */
 	@Test
 	public void testGetReactorHealth(){
