@@ -709,6 +709,10 @@ public class OperatorSoftwareTest {
 	/*
 	 * -------------- Other Operator Software Functionality Tests -----------------------
 	 */
+	/**
+	 * Tests Step() in operator software.
+	 * Pass Criteria: The number of steps recorded by the plant will increase by one after step() is called.
+	 */
 	@Test
 	public void testStep(){
 		for(int i = 1; i <= 10; i++){
@@ -718,12 +722,20 @@ public class OperatorSoftwareTest {
 			assertEquals(initialNumSteps + i , newNumSteps);
 		}
 	}
+	/**
+	 * Tests newGame() and getOperatorName() in operator software. 
+	 * Pass Criteria: The operator name returned by getOperatorName() is the same as the name passed as a parameter to newGame();
+	 */
 	@Test
 	public void testNewGame_GetOperatorName(){
 		String name = "Anchovy";
 		OS.newGame(name);
 		assertEquals(name, OS.getOperatorName());
 	}
+	/**
+	 * Tests loadSaveGame() and LoadGame() in operatorSoftware. A new game is started, the game is saved, then a new new game is started. The old game is then loaded. The operator names in the saved game and the loaded game should be the same. 
+	 * Pass Criteria: The game loaded is the same as the saved game.
+	 */
 	@Test
 	public void testSaveGame_LoadGame(){
 		String name = "Anchovy";
@@ -734,22 +746,38 @@ public class OperatorSoftwareTest {
 		OS.loadGame();
 		assertEquals(name, OS.getOperatorName());
 	}
+	/**
+	 * Tests getHighScores() in Operator Software.
+	 * Pass Criteria: The high scores returned by getHighScores() from the operator software match those returned by getHighScores from Plant Controller
+	 */
 	@Test
 	public void testGetHighScores(){
 		assertSame(controller.getHighScores(), OS.getHighScores());
 	}
+	/**
+	 * Tests addHighScore() in operator software. Creates and adds a high score the the list of high scores.
+	 * Pass Criteria: The list of high scores contains the high score added by addHighScore()
+	 */
 	@Test
 	public void testAddHighScore(){
 		HighScore highScore = new HighScore("Anchovy", 9001);
 		OS.addHighScore(highScore);
 		assertTrue(controller.getHighScores().contains(highScore));
 	}
+	/**
+	 * Tests getScore() in operator software.
+	 * Pass Criteria: The value returned by getScore() in operator software is the same as that returned by getScore() in the plant.
+	 */
 	@Test
 	public void testScore(){
 		int actualScore = controller.getPlant().getScore();
 		int OSScore = OS.getScore();
 		assertEquals(actualScore, OSScore);
 	}
+	/**
+	 * Tests isGameOver in operator software.
+	 * Pass Criteria: The value returned by isGameOver in operator software is the same as that returned by isGameOver in the plant.
+	 */
 	@Test
 	public void testIsGameOver(){
 		boolean actualStatus = controller.getPlant().isGameOver();
