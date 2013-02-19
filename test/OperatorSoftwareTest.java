@@ -656,30 +656,50 @@ public class OperatorSoftwareTest {
 	/*
 	 * -------------- Get Min/Max component values -----------------------
 	 */
+	/**
+	 * Tests getCondenserMaxPressure() in operator Software.
+	 * Pass Criteria: The value returned by getCondenserMaxPressure() will be the same as that returned by condenser.getMaxPressure()
+	 */
 	@Test
 	public void testGetCondenserMaxPressure(){
 		int actualMax = controller.getPlant().getCondenser().getMaxPressure();
 		int OSMax = OS.getCondenserMaxPressure();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMaxPressure() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMaxPressure() will be the same as that returned by reactor.getMaxPressure()
+	 */
 	@Test
 	public void testGetReactorMaxPresssure(){
 		int actualMax = controller.getPlant().getReactor().getMaxPressure();
 		int OSMax = OS.getReactorMaxPressure();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMaxTemperature() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMaxTemperature() will be the same as that returned by reactor.getMaxTemperature()
+	 */
 	@Test
 	public void testGetReactorMaxTemperature(){
 		int actualMax = controller.getPlant().getReactor().getMaxTemperature();
 		int OSMax = OS.getReactorMaxTemperature();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getCondenserMaxTemperature() in operator Software.
+	 * Pass Criteria: The value returned by getCondenserMaxTemperature() will be the same as that returned by condenser.getMaxTemperature()
+	 */
 	@Test 
 	public void testGetCondenserMaxTemperature(){
 		int actualMax = controller.getPlant().getCondenser().getMaxTemperature();
 		int OSMax = OS.getCondenserMaxTemperature();
 		assertEquals(actualMax, OSMax);
 	}
+	/**
+	 * Tests getReactorMinSafeWaterVolume() in operator Software.
+	 * Pass Criteria: The value returned by getReactorMinSafeWaterVolume() will be the same as that returned by reactor.getMinSafeWaterVolume()
+	 */
 	@Test
 	public void testGetReactorMinSafeWaterVolume(){
 		int actualMin = controller.getPlant().getReactor().getMinSafeWaterVolume();
