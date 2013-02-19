@@ -586,6 +586,10 @@ public class OperatorSoftwareTest {
 	/*
 	 *------------------- Component Functionality and Repair Tests ---------------------- 
 	 */
+	/**
+	 * Tests arePumpsFunctional() in operator software.
+	 * Pass Criteria: For every pump, the value returned by arePumpsFunctional() will be the same as the actual functionality value of the pump.
+	 */
 	@Test
 	public void testArePumpsFunctional(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -595,12 +599,20 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i + 1), actualFunc, OSFunc);
 		}
 	}
+	/**
+	 * Tests isTurbineFunctional() in operator software.
+	 * Pass Criteria: The value returned by isTurbineFunctional() will be the same as the actual functionality value of the turbine.
+	 */
 	@Test
 	public void testIsTurbineFunctional(){
 		boolean actualFunc = controller.getPlant().getTurbine().isOperational();
 		boolean OSFunc = OS.isTurbineFunctional();
 		assertEquals(actualFunc, OSFunc);
 	}
+	/**
+	 * Tests repairTurbine() in operator software.
+	 * Pass Criteria: After the required number of game steps to repair a Turbine, a non operational turbine will become operational.
+	 */
 	@Test
 	public void testRepairTurbine(){
 		while(OS.isTurbineFunctional()) //Keep stepping through game until Turbine randomly breaks.
@@ -609,6 +621,10 @@ public class OperatorSoftwareTest {
 		controller.step(controller.getPlant().getTurbine().getRepairTime());
 		assertEquals(true, controller.getPlant().getTurbine().isOperational());
 	}
+	/**
+	 * Tests repairPump() in operator software.
+	 * Pass Criteria: For each pump in the plant, after the required number of game steps to repair a pump, the non operational pump will become operational.
+	 */
 	@Test
 	public void testRepairPumps(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -621,6 +637,10 @@ public class OperatorSoftwareTest {
 			assertEquals(true, controller.getPlant().getPumps().get(i).isOperational());
 		}
 	}
+	/**
+	 * Tests rebootOs() in operator software.
+	 * Pass Criteria: After calling rebootOS() on a failed OperatorSoftware, the Operator Software will be functional.
+	 */
 	@Test
 	public void testRebootOS(){
 		int numOSFailedAttempts = 0;
