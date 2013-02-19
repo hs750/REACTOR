@@ -124,7 +124,7 @@ public class SideBar
 			{
 				displayedInfo.add(new Text("Condenser pump is broken.", 15));
 				displayedInfo.get(8).nextLine(displayedInfo.get(9), met);
-				displayedInfo.get(9).allign(repair, met);
+				displayedInfo.get(9).nextLine(repair, met);
 				repair.enable();
 			}
 			 
@@ -157,7 +157,7 @@ public class SideBar
 			{
 				displayedInfo.add(new Text("Pump is broken.", 15));
 				displayedInfo.get(3).nextLine(displayedInfo.get(4), met);
-				displayedInfo.get(4).allign(repair, met);
+				displayedInfo.get(4).nextLine(repair, met);
 				repair.enable();
 			}
 
@@ -182,7 +182,7 @@ public class SideBar
 			displayedInfo.add(new Text("Water Volume: " + opSoft.getReactorWaterVolume(), 15));
 			displayedInfo.get(3).nextLine(displayedInfo.get(4), met);
 			
-			displayedInfo.add(new Text("Control rod position: ", 15));
+			displayedInfo.add(new Text("Control rod position:", 15));
 			displayedInfo.get(4).nextLine(displayedInfo.get(5), met);
 			displayedInfo.get(5).allign(decrease, met);
 			displayedInfo.add(new Text(Integer.toString(opSoft.getControlRodsPercentage()), 15));
@@ -207,7 +207,7 @@ public class SideBar
 			{
 				displayedInfo.add(new Text("Turbine is broken.", 15));
 				displayedInfo.get(2).nextLine(displayedInfo.get(3), met);
-				displayedInfo.get(3).allign(repair, met);
+				displayedInfo.get(3).nextLine(repair, met);
 				repair.enable();
 			}
 			
@@ -225,7 +225,7 @@ public class SideBar
 			else  displayedInfo.add(new Text("State: Closed", 15));
 			displayedInfo.get(0).nextLine(displayedInfo.get(1), met);
 			
-			displayedInfo.get(0).nextLine(switchButton, met);
+			displayedInfo.get(1).allign(switchButton, met);
 			break;
 		default:
 			break;

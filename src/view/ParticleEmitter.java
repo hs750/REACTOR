@@ -92,8 +92,10 @@ public class ParticleEmitter
 		{
 			Particle p = new Particle();
 			p.age = 0;
-			p.x = x;
-			p.y = y;
+			if(variedXSpawn >= 1)
+				p.x = x + random.nextInt(variedXSpawn) - variedXSpawn / 2;
+			else p.x = x;
+			p.y = y; 
 			p.vx = startVelocityX + random.nextInt(variation) - variation / 2;
 			p.vy = startVelocityY + random.nextInt(variation) - variation / 2;
 			p.ax = startAccelerationX;
@@ -153,6 +155,26 @@ public class ParticleEmitter
 		return aliveParticles;
 	}
 	
+	
+	/**
+	 * Returns the horizontal particle spawning variation
+	 * @return Horizontal particle spawning variation
+	 */
+	public int getVariedXSpawn() 
+	{
+		return variedXSpawn;
+	}
+	/**
+	 * Sets the horizontal particle spawning variation
+	 * @param variedXSpawn Horizontal particle spawning variation
+	 */
+	public void setVariedXSpawn(int variedXSpawn) 
+	{
+		this.variedXSpawn = variedXSpawn;
+	}
+
+
+
 	Renderable renderable;
 	Particle [] particles;
 	
@@ -171,6 +193,8 @@ public class ParticleEmitter
 	int startAccelerationX;
 	int startAccelerationY;
 	int variation;
+	
+	int variedXSpawn;
 	
 	boolean active;
 	Random random;

@@ -1,5 +1,8 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JOptionPane;
 
 import simulator.OperatorSoftware;
@@ -36,21 +39,29 @@ public class GUI
 		turbineSmoke.disable();
 		pump1Smoke = new ParticleEmitter("graphics/particle.png", 10, 4, 700, 592, 300, 2, -1, 0, -1, 4);
 		turbineSmoke.disable();
+		steam = new ParticleEmitter("graphics/particle.png", 15, 1, 2000, 690, 100, 2, -1, 0, -1, 5);
+		steam.setVariedXSpawn(100);
 		step = new StepButton("graphics/step.png", 1030, 400, 100, 100);
 		
 		newGame = new NewGame(new Text("New game", 0, 0, 17), "graphics/genericButton.png", 25, 10, 140, 35);
 		newGame.getRenderable().setDepthLevel(105);
+		newGame.getText().setColor(Color.white);
 		saveGame = new SaveGame(new Text("Save game", 0, 0, 17), "graphics/genericButton.png", 170, 10, 140, 35);
 		saveGame.getRenderable().setDepthLevel(105);
+		saveGame.getText().setColor(Color.white);
 		loadGame = new LoadGame(new Text("Load game", 0, 0, 17), "graphics/genericButton.png", 315, 10, 140, 35);
 		loadGame.getRenderable().setDepthLevel(105);
+		loadGame.getText().setColor(Color.white);
 		scoresButton = new ScoresButton(new Text("High scores", 0, 0, 17), "graphics/genericButton.png", 460, 10, 145, 35);
-		scoresButton.getRenderable().setDepthLevel(105);
+		scoresButton.getText().setColor(Color.white);
 		
+		scoresButton.getRenderable().setDepthLevel(105);
+		r.setDefaultFontName("Impact");
 		radio = new RadioButton();
 		
 		restartSoftware = new RestartButton("graphics/restart.png", 1030, 500, 100, 100);
 		
+		sidebarPic = new Renderable("graphics/sidebar.png", 1024, 0, 246, 655, 0);
 		background = new Renderable("graphics/background.png", 0, 0, 1024, 683, 0);
 		gameOverSplash = new Renderable("graphics/gameover.png", 0, 0, 1024, 683, 103);
 		gameOverSplash.setVisible(false);
@@ -136,6 +147,7 @@ public class GUI
 			elapsed += time.getDelta();
 			if(elapsed >= 34) //In milliseconds, which means ~30 fps
 			{
+				steam.update(elapsed); //Condenser always smokes
 				//Smoke effects work only if the corresponding components are broken
 				if(!opSoft.isTurbineFunctional() )
 				{
@@ -155,7 +167,9 @@ public class GUI
 					pump2Smoke.enable();
 					pump2Smoke.update(elapsed);
 				}
+				
 				else pump2Smoke.disable();
+				
 				elapsed -= 34;
 				updateGraphics();
 				
@@ -183,7 +197,9 @@ public class GUI
 		radio.enableButtons();
 		step.enable();
 		restartSoftware.enable();
+		steam.enable();
 		gameOverSplash.setVisible(false);
+		gameOver = false;
 		
 	}
 	
@@ -224,6 +240,7 @@ public class GUI
 				step.disable();
 				restartSoftware.disable();
 				gameOverSplash.setVisible(true);
+				steam.disable();
 			}
 		}
 	}
@@ -458,11 +475,13 @@ public class GUI
 		r.queueForRendering(saveGame);
 		r.queueForRendering(loadGame);
 		r.queueForRendering(scoresButton);
+		r.queueForRendering(sidebarPic);
 		if(!gameOver)
 		{
 			r.queueForRendering(turbineSmoke);
 			r.queueForRendering(pump1Smoke);
 			r.queueForRendering(pump2Smoke);
+			r.queueForRendering(steam);
 		}
 		if(operatorName != null && operatorName.length() != 0)
 			r.queueForRendering(new Text ("Welcome, " +  operatorName + '!', 1030, 15, 15));
@@ -473,6 +492,7 @@ public class GUI
 	ParticleEmitter turbineSmoke;
 	ParticleEmitter pump1Smoke;
 	ParticleEmitter pump2Smoke;
+	ParticleEmitter steam;
 	
 	SideBar sideBar;
 	NewGame newGame;
@@ -484,6 +504,7 @@ public class GUI
 	
 	Renderable gameOverSplash;
 	Renderable background;
+	Renderable sidebarPic;
 	
 	Renderable reactorPic;
 	Renderable turbinePic;

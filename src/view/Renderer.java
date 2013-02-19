@@ -141,7 +141,12 @@ public class Renderer extends Canvas
 		}
 		for(Text t: displayedTexts)
 		{
-			graphics.setFont(new Font(null, Font.PLAIN, t.getSize()));
+			String fontName; 
+			if(t.getFontName() == null)
+				fontName = defaultFontName;
+			else fontName = t.getFontName();
+	
+			graphics.setFont(new Font(fontName, t.getStyle(), t.getSize()));
 			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, t.getAlpha()));
 			graphics.setColor(t.getColor());
 			graphics.drawString(t.getString(), t.getPosX(), t.getPosY());
@@ -158,10 +163,18 @@ public class Renderer extends Canvas
 	public FontMetrics getMetrics(Text t)
 	{
 		Graphics2D graphics = (Graphics2D) strategy.getDrawGraphics();
-		Font f = new Font(null, Font.PLAIN, t.getSize());
+		Font f = new Font(t.getFontName(), t.getStyle(), t.getSize());
 		FontMetrics m = graphics.getFontMetrics(f);
 		graphics.dispose();
 		return m;
+	}
+	/**
+	 * Sets a default font name to be used on fonts that don't have any other font name specified.
+	 * @param name Default font name
+	 */
+	public void setDefaultFontName(String name)
+	{
+		defaultFontName = name;
 	}
 	/**
 	 * Comparator for sorting/comparing renderables based on their depth levels.
@@ -175,6 +188,7 @@ public class Renderer extends Canvas
 	        return o1.getDepthLevel() - o2.getDepthLevel();
 	    }
 	}
+	String defaultFontName;
 	BufferStrategy strategy;
 	ArrayList<Renderable> renderables;
 	ArrayList<Text> displayedTexts;

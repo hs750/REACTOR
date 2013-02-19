@@ -43,6 +43,8 @@ public class Text
 		alpha = 1.0f;
 		color = Color.black;
 		visible = true;
+		style = Font.PLAIN;
+		
 	}
 	/**
 	 * Returns a string that will be drawn onto the screen.
@@ -171,9 +173,9 @@ public class Text
 	 */
 	public void nextLine(Button b, FontMetrics metrics)
 	{
-		int height = metrics.getHeight();
+		//int height = metrics.getHeight();
 		b.setPosX(posX);
-		b.setPosY(posY + height + 10);
+		b.setPosY(posY + 2);
 	}
 	/**
 	 * Changes the text from visible into invisible (won't be rendered).
@@ -192,10 +194,42 @@ public class Text
 		return visible;
 	}
 	
+	/**
+	 * Returns the font name used by this Text object.
+	 * @return Font name
+	 */
+	public String getFontName() {
+		return fontName;
+	}
+	/**
+	 * Sets the font name used by this Text object.
+	 * @param fontName
+	 */
+	public void setFontName(String fontName) {
+		this.fontName = fontName;
+	}
+	/**
+	 * Returns the font style (plain/bold/italic).
+	 * @return Font style
+	 */
+	public int getStyle() {
+		return style;
+	}
+	/**
+	 * Sets the font style (plain/bold/italic).
+	 * @param style Font style
+	 */
+	public void setStyle(int style) {
+		this.style = style;
+	}
+
+
 	float alpha;
 	
 	boolean visible;
 	
+	String fontName;
+	int style;
 	Color color;
 	int size;
 	int posX;
