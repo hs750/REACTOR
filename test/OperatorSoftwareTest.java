@@ -204,8 +204,8 @@ public class OperatorSoftwareTest {
 	 * ----------------------Test Component Getter Methods when OS is functional ---------------------------
 	 */
 	/**
-	 * Tests getReactorHealth() in Operator Software.
-	 * Pass Criteria: plant.reactor.getHealth() == OS.getReactorHealth()
+	 * Tests getReactorHealth() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The health value from the reactor matches that returned by getReactorHealth()
 	 */
 	@Test
 	public void testGetReactorHealth(){
@@ -213,54 +213,90 @@ public class OperatorSoftwareTest {
 		int OSHealth = OS.getReactorHealth();
 		assertEquals(actualHealth, OSHealth);
 	}
+	/**
+	 * Tests getReactorTemperature() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The temperature value from the reactor matches that returned by getReactorTemperature()
+	 */
 	@Test
 	public void testGetReactorTemperature(){
 		int actualTemp = controller.getPlant().getReactor().getTemperature();
 		int OSTemp = OS.getReactorTemperature();
 		assertEquals(actualTemp, OSTemp);
 	}
+	/**
+	 * Tests getReactorPressure() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The pressure value from the reactor matches that returned by getReactorPressure()
+	 */
 	@Test
 	public void testGetReactorPressure(){
 		int actualPressure = controller.getPlant().getReactor().getPressure();
 		int OSPressure = OS.getReactorPressure();
 		assertEquals(actualPressure, OSPressure);
 	}
+	/**
+	 * Tests getReactorWaterLevel() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The water level value from the reactor matches that returned by getReactorWaterLevel()
+	 */
 	@Test
 	public void testGetReactorWaterVolume(){
 		int actualVol = controller.getPlant().getReactor().getWaterVolume();
 		int OSVol = OS.getReactorWaterVolume();
 		assertEquals(actualVol, OSVol);
 	}
+	/**
+	 * Tests getCondenserHealth() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The health value from the condenser matches that returned by getCondenserHealth()
+	 */
 	@Test
 	public void testGetCondenserHealth(){
 		int actualHealth = controller.getPlant().getCondenser().getHealth();
 		int OSHealth = OS.getCondenserHealth();
 		assertEquals(actualHealth, OSHealth);
 	}
+	/**
+	 * Tests getCondenserTemperature() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The temperature value from the condenser matches that returned by getCondenserTemperature()
+	 */
 	@Test
 	public void testGetCondenserTemperature(){
 		int actualTemp = controller.getPlant().getCondenser().getTemperature();
 		int OSTemp = OS.getCondenserTemperature();
 		assertEquals(actualTemp, OSTemp);
 	}
+	/**
+	 * Tests getCondenserPressure() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The pressure value from the condenser matches that returned by getCondenserPressure()
+	 */
 	@Test
 	public void testGetCondenserPressure(){
 		int actualPressure = controller.getPlant().getCondenser().getPressure();
 		int OSPressure = OS.getCondenserPressure();
 		assertEquals(actualPressure, OSPressure);
 	}
+	/**
+	 * Tests getCondenserWaterLevel() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The water level value from the condenser matches that returned by getCondenserWaterLevel()
+	 */
 	@Test
 	public void testGetCondenserWaterVolume(){
 		int actualVol = controller.getPlant().getCondenser().getWaterVolume();
 		int OSVol = OS.getCondenserWaterVolume();
 		assertEquals(actualVol, OSVol);
 	}
+	/**
+	 * Tests getControlRodPercentage() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: value returned by getControlRodPercentage() matches the value that the control rods level was manually set to (50).
+	 */
 	@Test
 	public void testGetControlRodPercentage(){
 		controller.getPlant().getReactor().setPercentageLowered(50);
 		int OS_CR_Level = OS.getControlRodsPercentage();
 		assertEquals(50, OS_CR_Level);
 	}
+	/**
+	 * Tests getValvePositions() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every valve will be set to closed and then getValvePosition() will return false
+	 */
 	@Test
 	public void testGetValvePositions(){
 		int numValves = controller.getPlant().getValves().size();
@@ -269,6 +305,10 @@ public class OperatorSoftwareTest {
 			assertEquals("Valve " + (i+1),false, OS.getValvePositions()[i]);
 		}
 	}
+	/**
+	 * Tests getPumpRpms() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every pump's RPM will be set to 123 and then getPumpRpms() will return 123
+	 */
 	@Test 
 	public void testGetPumpRpms(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -277,6 +317,10 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i+1), 123, OS.getPumpRpms()[i]);
 		}
 	}
+	/**
+	 * Tests arePumpsOn() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: Every pump is set to off and then arePumpsOn() will return false
+	 */
 	@Test
 	public void testArePumpsOn(){
 		int numPumps = controller.getPlant().getPumps().size();
@@ -285,12 +329,20 @@ public class OperatorSoftwareTest {
 			assertEquals("Pump " + (i+1), false, OS.arePumpsOn()[i]);
 		}
 	}
+	/**
+	 * Tests getTurbineRpm() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The RPM value from the Turbine in the power plant will be the same as that returned by getTurbineRpm()
+	 */
 	@Test
 	public void testGetTurbineRpm(){
 		int actualRPM = controller.getPlant().getTurbine().getRpm();
 		int OS_RPM = OS.getTurbineRpm();
 		assertEquals(actualRPM, OS_RPM);
 	}
+	/**
+	 * Tests getPowerOutput() in Operator Software, when Operator Software is functional.
+	 * Pass Criteria: The power output value from the Generator in the power plant will be the same as that returned by getPowerOutput()
+	 */
 	@Test
 	public void testGetPowerOutput(){
 		int actualOutput = controller.getPlant().getGenerator().getPowerOutput();
