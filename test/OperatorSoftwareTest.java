@@ -25,7 +25,6 @@ public class OperatorSoftwareTest {
 	
 	/**
 	 * Create the instances of Reactor Utilities, Plant Controller, and Operator Software needed for the tests on the Operator Software.
-	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
